@@ -16,6 +16,9 @@ import CardFooter from "components/Card/CardFooter.js";
 import avatar from "assets/img/faces/marc.jpg";
 import { Link } from "@material-ui/core";
 
+import { useDispatch } from "react-redux";
+import { login } from "actions";
+
 const styles = {
     cardCategoryWhite: {
         color: "rgba(255,255,255,.62)",
@@ -38,6 +41,7 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function Login() {
+    const dispatch = useDispatch();
     const classes = useStyles();
     return (
         <div>
@@ -78,8 +82,12 @@ export default function Login() {
                         </CardBody>
                         <CardFooter>
                             <div style={{ width: '100%' }}>
-                                <Link href="/register" color="primary" style={{ float: 'left' }}>Fogot password?</Link>
-                                <Button style={{ float: 'right' }} color="primary">Login</Button>
+                                <Link href="/fogotpassword" color="primary" style={{ float: 'left' }}>Fogot password?</Link>
+                                <Button
+                                    style={{ float: 'right' }}
+                                    color="primary"
+                                    onClick={e => dispatch(login(null))}
+                                >Login</Button>
                             </div>
                         </CardFooter>
                     </Card>

@@ -1,4 +1,4 @@
-const bloodGroups = [
+export const bloodGroups = [
     {
         value: 0,
         label: "O-"
@@ -32,5 +32,3 @@ const bloodGroups = [
         label: "AB+"
     }
 ];
-
-export default bloodGroups;

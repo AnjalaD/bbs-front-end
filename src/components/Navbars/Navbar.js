@@ -19,10 +19,12 @@ import GuestNavbarLinks from "components/Navbars/GuestNavBarLinks";
 const useStyles = makeStyles(styles);
 
 export default function Header(props) {
+  console.log('isGuest', props.isGuest);
+
   const classes = useStyles();
+
   function makeBrand() {
     var name;
-    console.log(props.routes);
     props.routes.map(prop => {
       if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
         name = prop.name;
@@ -38,15 +40,17 @@ export default function Header(props) {
   return (
     <AppBar className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>
+        {/* Here we create navbar brand, based on route name */}
         <div className={classes.flex}>
-          {/* Here we create navbar brand, based on route name */}
-          <Button color="transparent" href="#" className={classes.title}>
-            {makeBrand()}
-          </Button>
+          {!props.isGuest ?
+            <Button color="transparent" href="#" className={classes.title}>
+              {makeBrand()}
+            </Button>
+            : null
+          }
         </div>
         <Hidden smDown implementation="css">
-          {/* <UserNavbarLinks /> */}
-          <GuestNavbarLinks />
+          {props.isGuest ? <GuestNavbarLinks /> : <UserNavbarLinks />}
         </Hidden>
         <Hidden mdUp implementation="css">
           <IconButton
@@ -64,7 +68,7 @@ export default function Header(props) {
 
 Header.propTypes = {
   color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"]),
-  rtlActive: PropTypes.bool,
+  isGuest: PropTypes.bool,
   handleDrawerToggle: PropTypes.func,
   routes: PropTypes.arrayOf(PropTypes.object)
 };

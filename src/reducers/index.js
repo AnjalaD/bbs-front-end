@@ -1,9 +1,8 @@
-import counterReducer from './counter';
-import isLoggedReducer from './isLogged';
+import currentUser from 'reducers/currentUser';
 import { combineReducers } from 'redux';
 
 const allReducers = combineReducers({
-    currentUser
+    currentUser: currentUser
 })
 
 export default allReducers

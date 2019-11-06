@@ -9,47 +9,43 @@ import Search from 'views/TableList/Search';
 import Register from 'views/Auth/Register';
 import Login from 'views/Auth/Login';
 
-const dashboardRoutes = [
+export const userRoutes = [
     {
         path: "/requests",
         name: "Requests",
         icon: SupervisorAccountIcon,
         component: Requests,
-        layout: "",
-        user: "user"
+        layout: ""
     },
     {
         path: "/profile",
         name: "User Profile",
         icon: PersonIcon,
         component: UserProfile,
-        layout: "",
-        user: "user"
+        layout: ""
     },
     {
         path: "/search",
         name: "Search Donors",
         icon: SearchIcon,
         component: Search,
-        layout: "",
-        user: "user"
-    },
+        layout: ""
+    }
+]
+
+export const guestRoutes = [
     {
         path: "/register",
         name: "Register",
         icon: SearchIcon,
         component: Register,
-        layout: "",
-        user: "guest"
+        layout: ""
     },
     {
         path: "/",
         name: "Login",
         icon: SearchIcon,
         component: Login,
-        layout: "",
-        user: "guest"
+        layout: ""
     }
 ]
-
-export default dashboardRoutes;

@@ -7,17 +7,17 @@ const currentUser = (state = init, action) => {
     // eslint-disable-next-line default-case
     switch (action.type) {
         case 'LOGIN':
-            return Object.assign({}, state, {
+            return ({
                 isLoggedIn: true,
                 user: action.payload
             });
         case 'LOGOUT':
-            return Object.assign({}, state, {
+            return ({
                 isLoggedIn: false,
                 user: null
             });
         default:
-            return false;
+            return state;
     }
 };
 

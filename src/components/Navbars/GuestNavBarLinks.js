@@ -1,11 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
-import { Link } from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
@@ -15,20 +15,24 @@ export default function GuestNavbarLinks() {
   return (
     <div>
       <div className={classes.manager}>
-        <Button
-          color={window.innerWidth > 959 ? "transparent" : "white"}
-          className={classes.buttonLink}
-        >
-          <Link className={classes.linkText} href={"/"}>Login</Link>
-        </Button>
+        <Link to="/">
+          <Button
+            color={window.innerWidth > 959 ? "transparent" : "white"}
+            className={classes.buttonLink}
+          >
+            Login
+          </Button>
+        </Link>
       </div>
       <div className={classes.manager}>
-        <Button
-          color={window.innerWidth > 959 ? "transparent" : "white"}
-          className={classes.buttonLink}
-        >
-          <Link className={classes.linkText} href={"/register"}>Register</Link>
-        </Button>
+        <Link className={classes.linkText} to="/register">
+          <Button
+            color={window.innerWidth > 959 ? "transparent" : "white"}
+            className={classes.buttonLink}
+          >
+            Register
+          </Button>
+        </Link>
       </div>
     </div>
   );
