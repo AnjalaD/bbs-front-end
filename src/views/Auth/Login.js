@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -18,6 +18,7 @@ import { Link } from "@material-ui/core";
 
 import { useDispatch } from "react-redux";
 import { login } from "actions";
+import { USER } from "config/testData";
 
 const styles = {
     cardCategoryWhite: {
@@ -42,10 +43,12 @@ const useStyles = makeStyles(styles);
 
 export default function Login() {
     const dispatch = useDispatch();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const classes = useStyles();
     return (
         <div>
-            <GridContainer justify="center">
+            <GridContainer justify="flex-end">
                 <GridItem xs={12} sm={12} md={4}>
                     <Card>
                         <CardHeader color="primary">
@@ -63,18 +66,25 @@ export default function Login() {
                                         formControlProps={{
                                             fullWidth: true
                                         }}
-                                    // inputProps={{
-                                    //   disabled: true
-                                    // }}
+                                        inputProps={{
+                                            name: 'email',
+                                            value: email,
+                                            onChange: e => setEmail(e.target.value)
+                                        }}
                                     />
                                 </GridItem>
                                 <GridItem xs={12} sm={12} md={12}>
                                     <CustomInput
                                         labelText="Password"
-                                        name="password"
                                         id="password"
                                         formControlProps={{
                                             fullWidth: true
+                                        }}
+                                        inputProps={{
+                                            type: 'password',
+                                            name: 'password',
+                                            value: password,
+                                            onChange: e => setPassword(e.target.value)
                                         }}
                                     />
                                 </GridItem>
@@ -86,7 +96,7 @@ export default function Login() {
                                 <Button
                                     style={{ float: 'right' }}
                                     color="primary"
-                                    onClick={e => dispatch(login(null))}
+                                    onClick={e => dispatch(login(USER))}
                                 >Login</Button>
                             </div>
                         </CardFooter>

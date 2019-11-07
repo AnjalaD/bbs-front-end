@@ -23,6 +23,7 @@ export default function Sidebar(props) {
   const classes = useStyles();
   // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
+    console.log(routeName, window.location.href, window.location.href.indexOf(routeName))
     return window.location.href.indexOf(routeName) > -1 ? true : false;
   }
   const { color, logo, image, logoText, routes } = props;
@@ -38,15 +39,15 @@ export default function Sidebar(props) {
           });
         } else {
           listItemClasses = classNames({
-            [" " + classes[color]]: activeRoute(prop.layout + prop.path)
+            [" " + classes[color]]: activeRoute(prop.path)
           });
         }
         const whiteFontClasses = classNames({
-          [" " + classes.whiteFont]: activeRoute(prop.layout + prop.path)
+          [" " + classes.whiteFont]: activeRoute(prop.path)
         });
         return (
           <NavLink
-            to={prop.layout + prop.path}
+            to={prop.path}
             className={activePro + classes.item}
             activeClassName="active"
             key={key}

@@ -10,11 +10,12 @@ import Hidden from "@material-ui/core/Hidden";
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
 // core components
+import GuestNavbarLinks from "components/Navbars/GuestNavBarLinks";
 import UserNavbarLinks from "components/Navbars/UserNavbarLinks";
 import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-dashboard-react/components/headerStyle.js";
-import GuestNavbarLinks from "components/Navbars/GuestNavBarLinks";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(styles);
 
@@ -23,13 +24,15 @@ export default function Header(props) {
 
   const classes = useStyles();
 
+  const isLoggedIn = useSelector(state => state.currentUser.isLoggedIn);
+
   function makeBrand() {
     var name;
     props.routes.map(prop => {
-      if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
+      if (window.location.href.indexOf(prop.path) !== -1) {
         name = prop.name;
       }
-      return null;
+      return name = "BBS";
     });
     return name;
   }
@@ -37,20 +40,18 @@ export default function Header(props) {
   const appBarClasses = classNames({
     [" " + classes[color]]: color
   });
+  console.log(window.location.href);
   return (
     <AppBar className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>
         {/* Here we create navbar brand, based on route name */}
         <div className={classes.flex}>
-          {!props.isGuest ?
-            <Button color="transparent" href="#" className={classes.title}>
-              {makeBrand()}
-            </Button>
-            : null
-          }
+          <h1 className={classes.title}>
+            Welcome!
+          </h1>
         </div>
         <Hidden smDown implementation="css">
-          {props.isGuest ? <GuestNavbarLinks /> : <UserNavbarLinks />}
+          {!isLoggedIn ? <GuestNavbarLinks /> : <UserNavbarLinks />}
         </Hidden>
         <Hidden mdUp implementation="css">
           <IconButton
@@ -68,7 +69,6 @@ export default function Header(props) {
 
 Header.propTypes = {
   color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"]),
-  isGuest: PropTypes.bool,
   handleDrawerToggle: PropTypes.func,
   routes: PropTypes.arrayOf(PropTypes.object)
 };

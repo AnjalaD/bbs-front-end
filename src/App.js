@@ -36,12 +36,11 @@ function App() {
     setMobileOpen(!mobileOpen);
   };
 
-  const guestView = (isLoggedIn) => (
+  const guestView = (
     <div className={classes.Wrapper}>
       <Navbar
         routes={guestRoutes}
         handleDrawerToggle={handleDrawerToggle}
-        isGuest={!isLoggedIn}
       />
 
       <div className={classes.content}>
@@ -55,7 +54,7 @@ function App() {
     </div>
   );
 
-  const userView = (isLoggedIn) => (
+  const userView = (
     <div className={classes.wrapper} styles={{ overflow: false }}>
       <Sidebar
         routes={userRoutes}
@@ -69,7 +68,6 @@ function App() {
         <Navbar
           routes={userRoutes}
           handleDrawerToggle={handleDrawerToggle}
-          isGuest={isLoggedIn}
         />
 
         <div className={classes.content}>
@@ -86,7 +84,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      {isLoggedIn ? userView(isLoggedIn) : guestView(isLoggedIn)}
+      {isLoggedIn ? userView : guestView}
     </BrowserRouter >
   );
 }

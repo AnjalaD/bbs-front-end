@@ -14,22 +14,19 @@ export const userRoutes = [
         path: "/requests",
         name: "Requests",
         icon: SupervisorAccountIcon,
-        component: Requests,
-        layout: ""
+        component: Requests
     },
     {
         path: "/profile",
         name: "User Profile",
         icon: PersonIcon,
-        component: UserProfile,
-        layout: ""
+        component: UserProfile
     },
     {
         path: "/search",
         name: "Search Donors",
         icon: SearchIcon,
-        component: Search,
-        layout: ""
+        component: Search
     }
 ]
 
@@ -38,14 +35,12 @@ export const guestRoutes = [
         path: "/register",
         name: "Register",
         icon: SearchIcon,
-        component: Register,
-        layout: ""
+        component: Register
     },
     {
         path: "/",
         name: "Login",
         icon: SearchIcon,
-        component: Login,
-        layout: ""
+        component: Login
     }
 ]
