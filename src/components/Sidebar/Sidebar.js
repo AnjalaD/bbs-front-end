@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
@@ -23,10 +23,14 @@ export default function Sidebar(props) {
   const classes = useStyles();
   // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
-    console.log(routeName, window.location.href, window.location.href.indexOf(routeName))
+    // console.log(routeName, window.location.href, window.location.href.indexOf(routeName))
     return window.location.href.indexOf(routeName) > -1 ? true : false;
   }
+
+  useEffect(() => console.log(window.location.href), []);
+
   const { color, logo, image, logoText, routes } = props;
+
   var links = (
     <List className={classes.list}>
       {routes.map((prop, key) => {

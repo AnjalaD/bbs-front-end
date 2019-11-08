@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -35,18 +34,19 @@ const useStyles = makeStyles(styles);
 
 export default function Register() {
   const initUser = {
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     birthday: '',
     gender: '',
-    email: ''
+    email: '',
+    password: '',
+    confirm: ''
   }
 
   const [user, setUser] = useState(initUser);
 
   const onChangeHandler = (e) => {
     const { value, name } = e.target;
-    // console.log('user', name, value);
     setUser(Object.assign({}, user, {
       [name]: value
     }));
@@ -74,8 +74,8 @@ export default function Register() {
                     value
                     inputProps={{
                       type: 'text',
-                      value: user.firstName,
-                      name: 'firstName',
+                      value: user.first_name,
+                      name: 'first_name',
                       onChange: onChangeHandler
                     }}
                   />
@@ -90,8 +90,8 @@ export default function Register() {
                     }}
                     inputProps={{
                       type: 'text',
-                      value: user.lastName,
-                      name: 'lastName',
+                      value: user.last_name,
+                      name: 'last_name',
                       onChange: onChangeHandler
                     }}
                   />

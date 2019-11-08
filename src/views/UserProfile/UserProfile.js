@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -14,7 +13,8 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import avatar from "assets/img/faces/marc.jpg";
+import maleAvatar from "assets/img/faces/male.svg";
+import femaleAvatar from "assets/img/faces/female.svg";
 
 const styles = {
   cardCategoryWhite: {
@@ -38,14 +38,31 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function UserProfile() {
-  const user = useSelector(state => state.currentUser.user);
   const classes = useStyles();
+  const user = useSelector(({ currentUser }) => currentUser.user);
+  const initUser = {
+    first_name: '',
+    last_name: '',
+    birthday: '',
+    gender: '',
+    email: '',
+    telephone: ''
+  }
 
-  const [updatableUser, setUpdatableUser] = useState(user);
+  const [updatableUser, setUpdatableUser] = useState(initUser);
+  useEffect(() => {
+    setUpdatableUser(user)
+  }, [user])
 
   const onChangeHandler = (e) => {
     const { value, name } = e.target;
-    setUpdatableUser(updatableUser[name] = value);
+    setUpdatableUser(Object.assign({}, updatableUser, {
+      [name]: value
+    }));
+  }
+
+  const submitHandler = () => {
+
   }
 
   return (
@@ -70,8 +87,8 @@ export default function UserProfile() {
                     value
                     inputProps={{
                       type: 'text',
-                      value: user.firstName,
-                      name: 'firstName',
+                      value: updatableUser.first_name,
+                      name: 'first_name',
                       onChange: onChangeHandler
                     }}
                   />
@@ -86,8 +103,8 @@ export default function UserProfile() {
                     }}
                     inputProps={{
                       type: 'text',
-                      value: user.lastName,
-                      name: 'lastName',
+                      value: updatableUser.last_name,
+                      name: 'last_name',
                       onChange: onChangeHandler
                     }}
                   />
@@ -105,7 +122,7 @@ export default function UserProfile() {
                     inputProps={{
                       disabled: true,
                       type: 'email',
-                      value: user.email,
+                      value: updatableUser.email,
                       name: 'email',
                       onChange: onChangeHandler
                     }}
@@ -120,7 +137,7 @@ export default function UserProfile() {
                     }}
                     inputProps={{
                       type: 'text',
-                      value: user.telephone,
+                      value: updatableUser.telephone,
                       name: 'telephone',
                       onChange: onChangeHandler
                     }}
@@ -138,7 +155,7 @@ export default function UserProfile() {
                     }}
                     inputProps={{
                       type: 'text',
-                      value: user.birthday,
+                      value: updatableUser.birthday,
                       name: 'birthday',
                       onChange: onChangeHandler
                     }}
@@ -154,7 +171,7 @@ export default function UserProfile() {
                     inputProps={{
                       disabled: true,
                       type: 'text',
-                      value: user.gender,
+                      value: updatableUser.gender,
                       name: 'gender',
                       onChange: onChangeHandler
                     }}
@@ -170,18 +187,20 @@ export default function UserProfile() {
         <GridItem xs={12} sm={12} md={4}>
           <Card profile>
             <CardAvatar profile>
-              <img src={avatar} alt="..." />
+              <img src={user.gender === "male" ? maleAvatar : femaleAvatar} alt="..." />
             </CardAvatar>
             <CardBody profile>
               <h5 className={classes.cardCategory}>{user.email}</h5>
-              <h4 className={classes.cardTitle}>{user.firstName + " " + user.lastName}</h4>
+              <h4 className={classes.cardTitle}>{user.first_name + " " + user.last_name}</h4>
               <h5 className={classes.cardCategory}>Tele. No: {user.telephone}</h5>
               <h5 className={classes.cardCategory}>Gender: {user.gender}</h5>
               <h5 className={classes.cardCategory}>Date of Birth: {user.birthday}</h5>
-
-              <Button color="primary" round>
-                Follow
-              </Button>
+              {
+                user.account_status === 0 ?
+                  <Button round color="primary">Be a Blood Donor</Button>
+                  :
+                  <Button round >Swicth To Basic Account</Button>
+              }
             </CardBody>
           </Card>
         </GridItem>

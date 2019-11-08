@@ -12,7 +12,6 @@ import Menu from "@material-ui/icons/Menu";
 // core components
 import GuestNavbarLinks from "components/Navbars/GuestNavBarLinks";
 import UserNavbarLinks from "components/Navbars/UserNavbarLinks";
-import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-dashboard-react/components/headerStyle.js";
 import { useSelector } from "react-redux";
@@ -20,27 +19,25 @@ import { useSelector } from "react-redux";
 const useStyles = makeStyles(styles);
 
 export default function Header(props) {
-  console.log('isGuest', props.isGuest);
-
   const classes = useStyles();
 
   const isLoggedIn = useSelector(state => state.currentUser.isLoggedIn);
 
-  function makeBrand() {
-    var name;
-    props.routes.map(prop => {
-      if (window.location.href.indexOf(prop.path) !== -1) {
-        name = prop.name;
-      }
-      return name = "BBS";
-    });
-    return name;
-  }
+  // function makeBrand() {
+  //   var name;
+  //   props.routes.map(prop => {
+  //     if (window.location.href.indexOf(prop.path) !== -1) {
+  //       name = prop.name;
+  //     }
+  //     return name = "BBS";
+  //   });
+  //   return name;
+  // }
   const { color } = props;
   const appBarClasses = classNames({
     [" " + classes[color]]: color
   });
-  console.log(window.location.href);
+  // console.log(window.location.href);
   return (
     <AppBar className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>

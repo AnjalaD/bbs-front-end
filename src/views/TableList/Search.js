@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -10,12 +10,13 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import Button from "components/CustomButtons/Button.js";
 import CustomSelect from "components/CustomInput/CustomSelect";
 import IconButton from "@material-ui/core/IconButton";
 
 //icons
 import SearchIcon from "@material-ui/icons/Search";
+import { SEARCH_TABLE_HEADERS } from "config/tableData";
+import { TEST_SEARCH_TABLE_DATA } from "config/testData";
 
 const styles = {
   cardCategoryWhite: {
@@ -50,6 +51,26 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function Search() {
+  const [searchValue, setSearchValue] = useState('');
+  const [searchResults, setSeachResutls] = useState([]);
+
+  useEffect(() => {
+    console.log('fetching search resutls...');
+    setSeachResutls(TEST_SEARCH_TABLE_DATA);
+  }, [searchValue]);
+
+  const formatSearchData = (searchResults) => (
+    searchResults.map((donor) => (
+      [
+        donor.first_name + " " + donor.last_name,
+        donor.bloodGroup,
+        donor.telephone,
+        "request"
+      ]
+    ))
+  );
+
+
   const classes = useStyles();
   return (
     <GridContainer>
@@ -66,9 +87,10 @@ export default function Search() {
                     fullWidth: true
                   }}
                   selection={bloodGroups}
-                // inputProps={{
-                //   disabled: true
-                // }}
+                  inputProps={{
+                    value: searchValue,
+                    onChange: (e => setSearchValue(e.target.value))
+                  }}
                 />
               </GridItem>
               <GridItem xs={1} sm={1} md={1}>
@@ -85,15 +107,8 @@ export default function Search() {
           <CardBody>
             <Table
               tableHeaderColor="primary"
-              tableHead={["Name", "Blood Type", "District", "Button"]}
-              tableData={[
-                ["Dakota Rice", "Niger", "Oud-Turnhout", <Button color="primary">Request</Button>],
-                ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789"],
-                ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142"],
-                ["Philip Chaney", "Korea, South", "Overland Park", "$38,735"],
-                ["Doris Greene", "Malawi", "Feldkirchen in Kärnten", "$63,542"],
-                ["Mason Porter", "Chile", "Gloucester", "$78,615"]
-              ]}
+              tableHead={SEARCH_TABLE_HEADERS}
+              tableData={formatSearchData(searchResults)}
             />
           </CardBody>
         </Card>

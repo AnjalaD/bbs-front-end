@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -9,16 +8,14 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
-import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import avatar from "assets/img/faces/marc.jpg";
 import { Link } from "@material-ui/core";
 
 import { useDispatch } from "react-redux";
 import { login } from "actions";
-import { USER } from "config/testData";
+import { TEST_USER } from "config/testData";
 
 const styles = {
     cardCategoryWhite: {
@@ -96,7 +93,7 @@ export default function Login() {
                                 <Button
                                     style={{ float: 'right' }}
                                     color="primary"
-                                    onClick={e => dispatch(login(USER))}
+                                    onClick={e => dispatch(login(TEST_USER))}
                                 >Login</Button>
                             </div>
                         </CardFooter>

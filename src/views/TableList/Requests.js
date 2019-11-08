@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -8,6 +8,8 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import { REQUEST_DATA_HEADERS } from "config/tableData";
+import { TEST_REQUEST_TABLE_DATA } from "config/testData";
 
 const styles = {
   cardCategoryWhite: {
@@ -43,6 +45,26 @@ const useStyles = makeStyles(styles);
 
 export default function Requests() {
   const classes = useStyles();
+  const [requests, setRequests] = useState([]);
+
+  const statusMessage = ['Pending', 'Accepted', 'Rejected'];
+
+  const formatRequestData = (requests) => (
+    requests.map(({ donor, reqState }) => (
+      [
+        donor.first_name + " " + donor.last_name,
+        donor.bloodGroup,
+        donor.telephone,
+        statusMessage[reqState]
+      ]
+    ))
+  );
+
+  useEffect(() => {
+    console.log('fetching requests...');
+    setRequests(TEST_REQUEST_TABLE_DATA);
+  }, []);
+
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -56,15 +78,8 @@ export default function Requests() {
           <CardBody>
             <Table
               tableHeaderColor="primary"
-              tableHead={["Blood Donor", "Blood Type", "Requested On", "Status", "Buttons"]}
-              tableData={[
-                ["Dakota Rice", "Niger", "Oud-Turnhout", "$36,738"],
-                ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789"],
-                ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142"],
-                ["Philip Chaney", "Korea, South", "Overland Park", "$38,735"],
-                ["Doris Greene", "Malawi", "Feldkirchen in Kärnten", "$63,542"],
-                ["Mason Porter", "Chile", "Gloucester", "$78,615"]
-              ]}
+              tableHead={REQUEST_DATA_HEADERS}
+              tableData={formatRequestData(requests)}
             />
           </CardBody>
         </Card>

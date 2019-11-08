@@ -23,7 +23,6 @@ function App() {
   );
 
   const isLoggedIn = useSelector(state => state.currentUser.isLoggedIn);
-  console.log('isloggedIn', isLoggedIn);
 
   const classes = useStyles();
 

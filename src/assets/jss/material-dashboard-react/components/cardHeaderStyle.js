@@ -7,7 +7,6 @@ import {
   roseCardHeader,
   whiteColor
 } from "assets/jss/material-dashboard-react.js";
-import { minHeight } from "@material-ui/system";
 
 const cardHeaderStyle = {
   cardHeader: {
