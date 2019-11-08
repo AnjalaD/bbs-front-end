@@ -2,7 +2,7 @@ import { HOST } from "./config"
 
 // USER ROUTES
 export const USER_SIGNUP = HOST + "api/users/signup"
-//   - POST(For sign up)  
+//   - POST(For sign up)
 export const USER_LOGIN = HOST + "api/users/login"
 //  - POST(for login)
 export const USER_SEARCH = HOST + "api/users/search"
@@ -19,7 +19,7 @@ export const USER_LOGOUT = HOST + "api/users/logout"
 //  POST
 
 // DONOR ROUTES
-// api/donors/login - POST
+// api/donors/login - POST/
 export const DONOR_HISTORY = HOST + "api/donors/history"
 //  - POST (See hsi/her medical history)
 export const DONOR_DOWNGRADE = HOST + "api/donors/unregister"
@@ -32,6 +32,8 @@ export const DONOR_ACCEPT_REQUEST = HOST + "api/donors/accept"
 // api/donors/logout POST
 
 // ADMIN ROUTES
+export const ADMIN_LOGIN = HOST + '';
+//
 export const ADMIN_SEARCH = HOST + "api/admin/search"
 //  POST search
 export const ADMIN_DELETE_USER = HOST + "api/admin/delete"

@@ -18,16 +18,16 @@ export const userRoutes = [
         component: Requests
     },
     {
-        path: "/profile",
-        name: "User Profile",
-        icon: PersonIcon,
-        component: UserProfile
-    },
-    {
         path: "/search",
         name: "Search Donors",
         icon: SearchIcon,
         component: Search
+    },
+    {
+        path: "/profile",
+        name: "User Profile",
+        icon: PersonIcon,
+        component: UserProfile
     }
 ]
 

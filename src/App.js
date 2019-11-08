@@ -59,6 +59,7 @@ function App() {
       <div className={classes.content}>
         <div className={classes.container}>
           <Switch>
+            {/* <Route path="/admin/login" component={} /> */}
             {createRoute(guestRoutes)}
             <Redirect from="/" to="/" />
           </Switch>

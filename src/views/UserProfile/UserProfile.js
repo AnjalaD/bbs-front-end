@@ -20,6 +20,8 @@ import { USER_UPGRAGE } from "config/api";
 import { DONOR_DOWNGRADE } from "config/api";
 import { set_loading } from "actions";
 import { USER_UPDATE } from "config/api";
+import { TESTING } from "config/config";
+import InputSelector from "components/CustomInput/InputSelector";
 
 const styles = {
   cardCategoryWhite: {
@@ -70,17 +72,21 @@ export default function UserProfile() {
   }
 
   const updateHandler = () => {
-    const options = {
-      method: 'PUT'
+    if (TESTING) {
+      dispatch(update_profile(updatableUser));
+    } else {
+      const options = {
+        method: 'PUT'
+      }
+      dispatch(set_loading(true));
+      //update user
+      fetch(USER_UPDATE, options)
+        .then(res => res.json())
+        .then(
+          dispatch(set_loading(false))
+        )
+        .catch(err => console.log("update user error", err));
     }
-    dispatch(set_loading(true));
-    //update user
-    fetch(USER_UPDATE, options)
-      .then(res => res.json())
-      .then(
-        dispatch(set_loading(false))
-      )
-      .catch(err => console.log("update user error", err));
   }
 
   const upgradeHandler = (userState) => {
@@ -99,6 +105,27 @@ export default function UserProfile() {
       )
       .catch(err => console.log('donor<=>viewer', err));
   }
+
+  const statusButton = [
+    <Button round color="primary" onClick={() => upgradeHandler(user.account_status)} >
+      Be a Blood Donor
+    </Button>,
+    <Button round onClick={() => upgradeHandler(user.account_status)} >
+      Swicth To Basic Account
+    </Button>,
+    <Button round disable color="primary">
+      Waiting...
+    </Button>
+  ];
+
+  const createFormFields = (fields) => (
+    fields.map((field, key) => (
+      < GridItem xs={12} sm={12} md={6} key={key}>
+        <InputSelector type={field.type} inputProps={field} />
+      </ GridItem>
+    ))
+  );
+
 
   return (
     <div>
@@ -235,31 +262,7 @@ export default function UserProfile() {
               <h5 className={classes.cardCategory}>Tele. No: {user.telephone}</h5>
               <h5 className={classes.cardCategory}>Gender: {user.gender}</h5>
               <h5 className={classes.cardCategory}>Date of Birth: {user.birthday}</h5>
-              {
-                user.account_status === 0 ?
-                  <Button
-                    round
-                    color="primary"
-                    onClick={() => upgradeHandler(user.account_status)}
-                  >
-                    Be a Blood Donor
-                  </Button>
-                  : (user.account_status === 1 ?
-                    <Button
-                      round
-                      onClick={() => upgradeHandler(user.account_status)}
-                    >
-                      Swicth To Basic Account
-                  </Button>
-                    :
-                    <Button
-                      round
-                      disabled
-                      color="primary"
-                    >
-                      Waiting...
-                  </Button>
-                  )}
+              {statusButton[user.account_status]}
             </CardBody>
           </Card>
         </GridItem>

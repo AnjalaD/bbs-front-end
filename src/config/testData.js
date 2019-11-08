@@ -74,4 +74,28 @@ export const TEST_REQUEST_TABLE_DATA = [
         },
         reqState: 1
     }
+];
+
+export const TEST_HISTORY_TABLE_DATA = [
+    {
+        receiver: {
+            first_name: 'xyz',
+            last_name: 'abc'
+        },
+        accepted_on: '2018-10-12'
+    },
+    {
+        receiver: {
+            first_name: 'addaw',
+            last_name: 'aseq'
+        },
+        accepted_on: '2018-01-12'
+    },
+    {
+        receiver: {
+            first_name: 'teq',
+            last_name: 'powel'
+        },
+        accepted_on: '2018-05-12'
+    }
 ]

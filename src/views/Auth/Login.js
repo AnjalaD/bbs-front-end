@@ -11,13 +11,12 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import { Link } from "@material-ui/core";
-
 import { useDispatch } from "react-redux";
-import { login } from "actions";
-// import { TEST_USER } from "config/testData";
-import { set_loading } from "actions";
+import { set_loading, login } from "actions";
+
+import { TEST_USER } from "config/testData";
 import { USER_LOGIN } from "config/api";
+import { TESTING } from "config/config";
 
 const styles = {
     cardCategoryWhite: {
@@ -46,32 +45,34 @@ export default function Login() {
     const [password, setPassword] = useState('');
 
     const loginHandler = () => {
-        //login logic
-        const user = {
-            email: email,
-            password: password
+        if (TESTING) {
+            // mimic login
+            dispatch(login(TEST_USER));
+        } else {
+            //login logic
+            const user = {
+                email: email,
+                password: password
+            }
+
+            const options = {
+                method: 'POST',
+                body: JSON.stringify(user)
+            }
+            //display loading view
+            dispatch(set_loading(true));
+
+            //check login
+            fetch(USER_LOGIN, options)
+                .then(res => res.json())
+                .then(res => {
+                    if (res) {
+                        //remove loading view
+                        dispatch(set_loading(false), login(res.user));
+                    }
+                })
+                .catch(err => console.log('logging api call error', err))
         }
-
-        const options = {
-            method: 'POST',
-            body: JSON.stringify(user)
-        }
-        //display loading view
-        dispatch(set_loading(true));
-
-        //check login
-        fetch(USER_LOGIN, options)
-            .then(res => res.json())
-            .then(res => {
-                if (res) {
-                    //remove loading view
-                    dispatch(set_loading(false), login(res.user));
-                }
-            })
-            .catch(err => console.log('logging api call error', err))
-
-        // mimic login
-        // dispatch(login(TEST_USER));
     }
 
     const classes = useStyles();
@@ -121,7 +122,6 @@ export default function Login() {
                         </CardBody>
                         <CardFooter>
                             <div style={{ width: '100%' }}>
-                                <Link href="/fogotpassword" color="primary" style={{ float: 'left' }}>Fogot password?</Link>
                                 <Button
                                     style={{ float: 'right' }}
                                     color="primary"

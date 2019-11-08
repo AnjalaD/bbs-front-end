@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -20,6 +20,7 @@ import { SEARCH_TABLE_HEADERS } from "config/tableData";
 import { TEST_SEARCH_TABLE_DATA } from "config/testData";
 import { USER_SEARCH } from "config/api";
 import { set_loading } from "actions";
+import { TESTING } from "config/config";
 
 const styles = {
     cardCategoryWhite: {
@@ -58,11 +59,6 @@ export default function Search() {
     const [searchValue, setSearchValue] = useState('');
     const [searchResults, setSeachResutls] = useState([]);
 
-    useEffect(() => {
-        console.log('fetching search resutls...');
-        setSeachResutls(TEST_SEARCH_TABLE_DATA);
-    }, [searchValue]);
-
     const formatSearchData = (searchResults) => (
         searchResults.map((donor) => (
             [
@@ -75,24 +71,28 @@ export default function Search() {
     );
 
     const searchHandler = () => {
-        const options = {
-            method: 'POST',
-            body: {
-                search: searchValue
+        if (TESTING) {
+            setSeachResutls(TEST_SEARCH_TABLE_DATA);
+        } else {
+            const options = {
+                method: 'POST',
+                body: {
+                    search: searchValue
+                }
             }
+
+            //set loading view
+            dispatch(set_loading(true));
+
+            //fetching search results...
+            fetch(USER_SEARCH, options)
+                .then(res => res.json)
+                .then(
+                    //remove loading view
+                    dispatch(set_loading(false))
+                )
+                .catch(err => console.log('fetch search results error', err))
         }
-
-        //set loading view
-        dispatch(set_loading(true));
-
-        //fetching search results...
-        fetch(USER_SEARCH, options)
-            .then(res => res.json)
-            .then(
-                //remove loading view
-                dispatch(set_loading(false))
-            )
-            .catch(err => console.log('fetch search results error', err))
 
     }
 

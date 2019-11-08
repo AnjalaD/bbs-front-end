@@ -10,6 +10,8 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import { DONOR_HISTORY } from "config/api";
 import { HISTORY_TABLE_HEADERS } from "config/tableData";
+import { TESTING } from "config/config";
+import { TEST_HISTORY_TABLE_DATA } from "config/testData";
 
 const styles = {
   cardCategoryWhite: {
@@ -47,29 +49,29 @@ export default function History() {
   const classes = useStyles();
   const [history, setHistory] = useState([]);
 
-  const statusMessage = ['Pending', 'Accepted', 'Rejected'];
-
   const formatHistoryData = (requests) => (
-    requests.map(({ donor, reqState }) => (
+    requests.map(({ receiver, accepted_on }) => (
       [
-        donor.first_name + " " + donor.last_name,
-        donor.bloodGroup,
-        donor.telephone,
-        statusMessage[reqState]
+        receiver.first_name + " " + receiver.last_name,
+        accepted_on
       ]
     ))
   );
 
   useEffect(() => {
-    const options = {
-      method: 'POST'
-    }
+    if (TESTING) {
+      setHistory(TEST_HISTORY_TABLE_DATA);
+    } else {
+      const options = {
+        method: 'POST'
+      }
 
-    console.log('fetching history...');
-    fetch(DONOR_HISTORY, options)
-      .then(res => res.json())
-      .then()
-      .catch(err => console.log('fetching history error', err))
+      console.log('fetching history...');
+      fetch(DONOR_HISTORY, options)
+        .then(res => res.json())
+        .then()
+        .catch(err => console.log('fetching history error', err))
+    }
 
   }, []);
 
