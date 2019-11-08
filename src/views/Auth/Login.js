@@ -15,7 +15,9 @@ import { Link } from "@material-ui/core";
 
 import { useDispatch } from "react-redux";
 import { login } from "actions";
-import { TEST_USER } from "config/testData";
+// import { TEST_USER } from "config/testData";
+import { set_loading } from "actions";
+import { USER_LOGIN } from "config/api";
 
 const styles = {
     cardCategoryWhite: {
@@ -42,6 +44,36 @@ export default function Login() {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const loginHandler = () => {
+        //login logic
+        const user = {
+            email: email,
+            password: password
+        }
+
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(user)
+        }
+        //display loading view
+        dispatch(set_loading(true));
+
+        //check login
+        fetch(USER_LOGIN, options)
+            .then(res => res.json())
+            .then(res => {
+                if (res) {
+                    //remove loading view
+                    dispatch(set_loading(false), login(res.user));
+                }
+            })
+            .catch(err => console.log('logging api call error', err))
+
+        // mimic login
+        // dispatch(login(TEST_USER));
+    }
+
     const classes = useStyles();
     return (
         <div>
@@ -93,7 +125,7 @@ export default function Login() {
                                 <Button
                                     style={{ float: 'right' }}
                                     color="primary"
-                                    onClick={e => dispatch(login(TEST_USER))}
+                                    onClick={loginHandler}
                                 >Login</Button>
                             </div>
                         </CardFooter>

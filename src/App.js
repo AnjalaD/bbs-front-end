@@ -12,6 +12,8 @@ import { userRoutes, guestRoutes } from 'routes';
 
 import { makeStyles } from "@material-ui/core/styles";
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
+import { Hidden } from '@material-ui/core';
+import LoadingModal from 'components/LoadingModal/LoadingModal';
 
 const useStyles = makeStyles(styles);
 
@@ -23,6 +25,7 @@ function App() {
   );
 
   const isLoggedIn = useSelector(state => state.currentUser.isLoggedIn);
+  const isLoading = useSelector(state => state.isLoading);
 
   const classes = useStyles();
 
@@ -37,6 +40,17 @@ function App() {
 
   const guestView = (
     <div className={classes.Wrapper}>
+      <Hidden mdUp>
+        <Sidebar
+          routes={guestRoutes}
+          logoText="BBS"
+          logo={logo}
+          open={mobileOpen}
+          image={bgImage}
+          handleDrawerToggle={handleDrawerToggle}
+        />
+
+      </Hidden>
       <Navbar
         routes={guestRoutes}
         handleDrawerToggle={handleDrawerToggle}
@@ -61,7 +75,7 @@ function App() {
         logo={logo}
         open={mobileOpen}
         image={bgImage}
-        handleDrowerToggle={handleDrawerToggle}
+        handleDrawerToggle={handleDrawerToggle}
       />
       <div className={classes.mainPanel} ref={mainPanel}>
         <Navbar
@@ -82,9 +96,14 @@ function App() {
   );
 
   return (
-    <BrowserRouter>
-      {isLoggedIn ? userView : guestView}
-    </BrowserRouter >
+    <div>
+      <LoadingModal
+        isLoading={isLoading}
+      />
+      <BrowserRouter>
+        {isLoggedIn ? userView : guestView}
+      </BrowserRouter >
+    </div>
   );
 }
 

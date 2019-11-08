@@ -1,6 +1,7 @@
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import PersonIcon from '@material-ui/icons/Person';
 import SearchIcon from '@material-ui/icons/Search';
+import CreateIcon from '@material-ui/icons/Create';
 
 
 import Requests from 'views/TableList/Requests';
@@ -34,7 +35,7 @@ export const guestRoutes = [
     {
         path: "/register",
         name: "Register",
-        icon: SearchIcon,
+        icon: CreateIcon,
         component: Register
     },
     {

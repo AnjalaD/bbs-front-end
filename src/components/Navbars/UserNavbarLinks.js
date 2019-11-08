@@ -17,7 +17,8 @@ export default function UserNavbarLinks() {
     <div>
       <div className={classes.manager}>
         <Button
-          color={window.innerWidth > 959 ? "transparent" : "white"}
+          round
+          color="primary"
           className={classes.buttonLink}
           onClick={e => dispatch(logout())}
         >

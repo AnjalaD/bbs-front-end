@@ -23,20 +23,11 @@ export default function Header(props) {
 
   const isLoggedIn = useSelector(state => state.currentUser.isLoggedIn);
 
-  // function makeBrand() {
-  //   var name;
-  //   props.routes.map(prop => {
-  //     if (window.location.href.indexOf(prop.path) !== -1) {
-  //       name = prop.name;
-  //     }
-  //     return name = "BBS";
-  //   });
-  //   return name;
-  // }
   const { color } = props;
   const appBarClasses = classNames({
     [" " + classes[color]]: color
   });
+
   // console.log(window.location.href);
   return (
     <AppBar className={classes.appBar + appBarClasses}>

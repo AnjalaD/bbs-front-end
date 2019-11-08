@@ -15,6 +15,11 @@ import CardFooter from "components/Card/CardFooter.js";
 
 import maleAvatar from "assets/img/faces/male.svg";
 import femaleAvatar from "assets/img/faces/female.svg";
+import { update_profile } from "actions";
+import { USER_UPGRAGE } from "config/api";
+import { DONOR_DOWNGRADE } from "config/api";
+import { set_loading } from "actions";
+import { USER_UPDATE } from "config/api";
 
 const styles = {
   cardCategoryWhite: {
@@ -39,7 +44,10 @@ const useStyles = makeStyles(styles);
 
 export default function UserProfile() {
   const classes = useStyles();
+
   const user = useSelector(({ currentUser }) => currentUser.user);
+  const dispatch = useDispatch();
+
   const initUser = {
     first_name: '',
     last_name: '',
@@ -61,8 +69,35 @@ export default function UserProfile() {
     }));
   }
 
-  const submitHandler = () => {
+  const updateHandler = () => {
+    const options = {
+      method: 'PUT'
+    }
+    dispatch(set_loading(true));
+    //update user
+    fetch(USER_UPDATE, options)
+      .then(res => res.json())
+      .then(
+        dispatch(set_loading(false))
+      )
+      .catch(err => console.log("update user error", err));
+  }
 
+  const upgradeHandler = (userState) => {
+    const options = {
+      method: 'POST'
+    }
+    const link = [USER_UPGRAGE, DONOR_DOWNGRADE];
+
+    dispatch(set_loading(true));
+
+    //change user type
+    fetch(link[userState], options)
+      .then(res => res.json())
+      .then(
+        dispatch(set_loading(false))
+      )
+      .catch(err => console.log('donor<=>viewer', err));
   }
 
   return (
@@ -180,7 +215,12 @@ export default function UserProfile() {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary">Update Profile</Button>
+              <Button
+                color="primary"
+                onClick={updateHandler}
+              >
+                Update Profile
+              </Button>
             </CardFooter>
           </Card>
         </GridItem>
@@ -197,10 +237,29 @@ export default function UserProfile() {
               <h5 className={classes.cardCategory}>Date of Birth: {user.birthday}</h5>
               {
                 user.account_status === 0 ?
-                  <Button round color="primary">Be a Blood Donor</Button>
-                  :
-                  <Button round >Swicth To Basic Account</Button>
-              }
+                  <Button
+                    round
+                    color="primary"
+                    onClick={() => upgradeHandler(user.account_status)}
+                  >
+                    Be a Blood Donor
+                  </Button>
+                  : (user.account_status === 1 ?
+                    <Button
+                      round
+                      onClick={() => upgradeHandler(user.account_status)}
+                    >
+                      Swicth To Basic Account
+                  </Button>
+                    :
+                    <Button
+                      round
+                      disabled
+                      color="primary"
+                    >
+                      Waiting...
+                  </Button>
+                  )}
             </CardBody>
           </Card>
         </GridItem>

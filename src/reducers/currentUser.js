@@ -16,6 +16,10 @@ const currentUser = (state = init, action) => {
                 isLoggedIn: false,
                 user: null
             });
+        case 'UPDATE_PROFILE':
+            return (Object.assign({}, state, {
+                user: action.payload
+            }));
         default:
             return state;
     }

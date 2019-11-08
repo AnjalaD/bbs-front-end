@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from 'react-redux';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -17,102 +18,128 @@ import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import { SEARCH_TABLE_HEADERS } from "config/tableData";
 import { TEST_SEARCH_TABLE_DATA } from "config/testData";
+import { USER_SEARCH } from "config/api";
+import { set_loading } from "actions";
 
 const styles = {
-  cardCategoryWhite: {
-    "&,& a,& a:hover,& a:focus": {
-      color: "rgba(255,255,255,.62)",
-      margin: "0",
-      fontSize: "14px",
-      marginTop: "0",
-      marginBottom: "0"
+    cardCategoryWhite: {
+        "&,& a,& a:hover,& a:focus": {
+            color: "rgba(255,255,255,.62)",
+            margin: "0",
+            fontSize: "14px",
+            marginTop: "0",
+            marginBottom: "0"
+        },
+        "& a,& a:hover,& a:focus": {
+            color: "#FFFFFF"
+        }
     },
-    "& a,& a:hover,& a:focus": {
-      color: "#FFFFFF"
+    cardTitleWhite: {
+        color: "#FFFFFF",
+        marginTop: "0px",
+        minHeight: "auto",
+        fontWeight: "300",
+        fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+        marginBottom: "3px",
+        textDecoration: "none",
+        "& small": {
+            color: "#777",
+            fontSize: "65%",
+            fontWeight: "400",
+            lineHeight: "1"
+        }
     }
-  },
-  cardTitleWhite: {
-    color: "#FFFFFF",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none",
-    "& small": {
-      color: "#777",
-      fontSize: "65%",
-      fontWeight: "400",
-      lineHeight: "1"
-    }
-  }
 };
 
 const useStyles = makeStyles(styles);
 
 export default function Search() {
-  const [searchValue, setSearchValue] = useState('');
-  const [searchResults, setSeachResutls] = useState([]);
+    const dispatch = useDispatch();
+    const [searchValue, setSearchValue] = useState('');
+    const [searchResults, setSeachResutls] = useState([]);
 
-  useEffect(() => {
-    console.log('fetching search resutls...');
-    setSeachResutls(TEST_SEARCH_TABLE_DATA);
-  }, [searchValue]);
+    useEffect(() => {
+        console.log('fetching search resutls...');
+        setSeachResutls(TEST_SEARCH_TABLE_DATA);
+    }, [searchValue]);
 
-  const formatSearchData = (searchResults) => (
-    searchResults.map((donor) => (
-      [
-        donor.first_name + " " + donor.last_name,
-        donor.bloodGroup,
-        donor.telephone,
-        "request"
-      ]
-    ))
-  );
+    const formatSearchData = (searchResults) => (
+        searchResults.map((donor) => (
+            [
+                donor.first_name + " " + donor.last_name,
+                donor.bloodGroup,
+                donor.telephone,
+                "request"
+            ]
+        ))
+    );
 
+    const searchHandler = () => {
+        const options = {
+            method: 'POST',
+            body: {
+                search: searchValue
+            }
+        }
 
-  const classes = useStyles();
-  return (
-    <GridContainer>
-      <GridItem xs={12} sm={12} md={12}>
-        <Card>
-          <CardHeader color="primary">
-            <GridContainer justify="center" alignItems="center">
-              <GridItem xs={5} sm={5} md={5}>
-                <CustomSelect
-                  labelText="Select the blood type..."
-                  id="blood-group"
-                  name="blood_group"
-                  formControlProps={{
-                    fullWidth: true
-                  }}
-                  selection={bloodGroups}
-                  inputProps={{
-                    value: searchValue,
-                    onChange: (e => setSearchValue(e.target.value))
-                  }}
-                />
-              </GridItem>
-              <GridItem xs={1} sm={1} md={1}>
-                <IconButton>
-                  <SearchIcon />
-                </IconButton>
-              </GridItem>
-            </GridContainer>
-            {/* <h4 className={classes.cardTitleWhite}>Search Results</h4> */}
-            <p className={classes.cardCategoryWhite}>
-              Search Results...
-            </p>
-          </CardHeader>
-          <CardBody>
-            <Table
-              tableHeaderColor="primary"
-              tableHead={SEARCH_TABLE_HEADERS}
-              tableData={formatSearchData(searchResults)}
-            />
-          </CardBody>
-        </Card>
-      </GridItem>
-    </GridContainer>
-  );
+        //set loading view
+        dispatch(set_loading(true));
+
+        //fetching search results...
+        fetch(USER_SEARCH, options)
+            .then(res => res.json)
+            .then(
+                //remove loading view
+                dispatch(set_loading(false))
+            )
+            .catch(err => console.log('fetch search results error', err))
+
+    }
+
+    const classes = useStyles();
+    return (
+        <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+                <Card>
+                    <CardHeader color="primary">
+                        <GridContainer justify="center" alignItems="center">
+                            <GridItem xs={5} sm={5} md={5}>
+                                <CustomSelect
+                                    labelText="Select the blood type..."
+                                    id="blood-group"
+                                    name="blood_group"
+                                    formControlProps={{
+                                        fullWidth: true
+                                    }}
+                                    selection={bloodGroups}
+                                    inputProps={{
+                                        value: searchValue,
+                                        onChange: (e => setSearchValue(e.target.value))
+                                    }}
+                                />
+                            </GridItem>
+                            <GridItem xs={1} sm={1} md={1}>
+                                <IconButton
+                                    onClick={searchHandler}
+                                >
+                                    <SearchIcon />
+                                </IconButton>
+                            </GridItem>
+                        </GridContainer>
+                        {/* <h4 className={classes.cardTitleWhite}>Search Results</h4> */}
+                        <p className={classes.cardCategoryWhite}>
+                            Search Results...
+                        </p>
+                    </CardHeader>
+                    <CardBody>
+                        <Table
+                            tableHeaderColor="primary"
+                            tableHead={SEARCH_TABLE_HEADERS}
+                            tableData={formatSearchData(searchResults)}
+                        />
+                    </CardBody>
+                </Card>
+            </GridItem>
+        </GridContainer>
+    );
 }

@@ -17,8 +17,9 @@ export default function GuestNavbarLinks() {
       <div className={classes.manager}>
         <Link to="/">
           <Button
-            color={window.innerWidth > 959 ? "transparent" : "white"}
+            color="primary"
             className={classes.buttonLink}
+            round
           >
             Login
           </Button>
@@ -27,8 +28,9 @@ export default function GuestNavbarLinks() {
       <div className={classes.manager}>
         <Link className={classes.linkText} to="/register">
           <Button
-            color={window.innerWidth > 959 ? "transparent" : "white"}
+            color="primary"
             className={classes.buttonLink}
+            round
           >
             Register
           </Button>
