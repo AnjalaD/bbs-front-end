@@ -152,24 +152,28 @@ export const TEST_HISTORY_TABLE_DATA = [
 
 export const TEST_UPGRADE_REQ_TABLE_DATA = [
     {
+        id: 1,
         first_name: 'Thumula',
         last_name: 'Meegamuwa',
         email: '123@a.com',
         telephone: '0711231234'
     },
     {
+        id: 2,
         first_name: 'Ruchin',
         last_name: 'Meegamuwa',
         email: '123@a.com',
         telephone: '071112334'
     },
     {
+        id: 3,
         first_name: 'Bucha',
         last_name: 'Meegamuwa',
         email: '123@a.com',
         telephone: '0711231234'
     },
     {
+        id: 4,
         first_name: 'Chamika',
         last_name: 'Meegamuwa',
         email: '123@a.com',

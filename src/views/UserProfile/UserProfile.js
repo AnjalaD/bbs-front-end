@@ -11,21 +11,17 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
+import InputSelector from "components/CustomInput/InputSelector";
+
 
 import maleAvatar from "assets/img/faces/male.svg";
 import femaleAvatar from "assets/img/faces/female.svg";
-import { update_profile } from "actions";
-import { USER_UPGRAGE } from "config/api";
-import { DONOR_DOWNGRADE } from "config/api";
-import { set_loading } from "actions";
-import { USER_UPDATE } from "config/api";
+import { update_profile, set_loading, logout } from "actions";
+import { USER_UPGRAGE, USER_UPDATE, USER_DELETE } from "config/api";
+import { DONOR_DOWNGRADE, DONOR_UPDATE, DONOR_DELETE } from "config/api";
 import { TESTING } from "config/config";
-import InputSelector from "components/CustomInput/InputSelector";
 import { userProfileFields } from "config/formData";
-import { USER_DELETE } from "config/api";
-import { logout } from "actions";
 import { setHeaders } from "util";
-import { DONOR_UPDATE } from "config/api";
 
 const styles = {
     cardCategoryWhite: {
@@ -106,13 +102,10 @@ export default function UserProfile() {
         } else {
             const options = {
                 headers: setHeaders(token),
-                method: 'POST',
-                body: JSON.stringify({})
+                method: 'POST'
             }
             const link = [USER_UPGRAGE, DONOR_DOWNGRADE];
-
             dispatch(set_loading(true));
-
             //change user type
             fetch(link[user.account_status], options)
                 .then(res => res.json())
@@ -129,14 +122,12 @@ export default function UserProfile() {
         } else {
             const options = {
                 method: 'DELETE',
-                headers: setHeaders(token),
-                body: JSON.stringify({})
+                headers: setHeaders(token)
             }
-
+            const link = [USER_DELETE, DONOR_DELETE];
             dispatch(set_loading(true));
-
             //deleting user type
-            fetch(USER_DELETE, options)
+            fetch(link[user.account_status], options)
                 .then(res => res.json())
                 .then(
                     dispatch(set_loading(false))

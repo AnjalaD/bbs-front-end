@@ -48,7 +48,10 @@ export default function Login() {
     const loginHandler = () => {
         if (TESTING) {
             // mimic login
-            dispatch(login(TEST_USER));
+            dispatch(login({
+                user: TEST_USER,
+                token: "sfafikfmalsnmclaswoc"
+            }));
         } else {
             //login logic
             const user = {

@@ -24,11 +24,10 @@ function App() {
     ))
   );
 
-  const isLoggedIn = useSelector(state => state.currentUser.isLoggedIn);
-  const user = useSelector(state => state.currentUser.user);
+  const { isLoggedIn, user } = useSelector(state => state.currentUser);
   const isLoading = useSelector(state => state.isLoading);
 
-  const userRoutes = (user !== null && user.account_status === 1) ? [donorRoutes,] : viewerRoutes;
+  const userRoutes = (user !== null && user.account_status === 1) ? donorRoutes : viewerRoutes;
 
   const classes = useStyles();
 

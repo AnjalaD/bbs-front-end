@@ -71,8 +71,7 @@ export default function UpgradeRequests() {
     } else {
       const options = {
         method: 'POST',
-        headers: setHeaders(token),
-        body: JSON.stringify({})
+        headers: setHeaders(token)
       }
 
       console.log('fetching upgrade requests...');

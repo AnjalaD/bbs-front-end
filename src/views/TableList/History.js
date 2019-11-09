@@ -67,8 +67,7 @@ export default function History() {
     } else {
       const options = {
         method: 'POST',
-        headers: setHeaders(),
-        body: JSON.stringify({})
+        headers: setHeaders()
       }
 
       console.log('fetching history...');
