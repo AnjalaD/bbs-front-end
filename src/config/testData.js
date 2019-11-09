@@ -42,6 +42,7 @@ export const TEST_SEARCH_TABLE_DATA = [
 
 export const TEST_REQUEST_TABLE_DATA = [
     {
+        id: 1,
         donor: {
             id: 1,
             first_name: 'Thumula',
@@ -52,6 +53,7 @@ export const TEST_REQUEST_TABLE_DATA = [
         reqState: 1
     },
     {
+        id: 2,
         donor: {
             id: 2,
             first_name: 'Ruchin',
@@ -62,6 +64,7 @@ export const TEST_REQUEST_TABLE_DATA = [
         reqState: 0
     },
     {
+        id: 3,
         donor: {
             id: 3,
             first_name: 'Bucha',
@@ -72,6 +75,7 @@ export const TEST_REQUEST_TABLE_DATA = [
         reqState: 2
     },
     {
+        id: 4,
         donor: {
             id: 4,
             first_name: 'Chamika',
@@ -85,6 +89,7 @@ export const TEST_REQUEST_TABLE_DATA = [
 
 export const TEST_RECEIVED_REQUEST_TABLE_DATA = [
     {
+        id: 1,
         sender: {
             id: 1,
             first_name: 'Thumula',
@@ -95,6 +100,7 @@ export const TEST_RECEIVED_REQUEST_TABLE_DATA = [
         reqState: 1
     },
     {
+        id: 2,
         sender: {
             id: 2,
             first_name: 'Ruchin',
@@ -105,6 +111,7 @@ export const TEST_RECEIVED_REQUEST_TABLE_DATA = [
         reqState: 0
     },
     {
+        id: 3,
         sender: {
             id: 3,
             first_name: 'Bucha',
@@ -115,6 +122,7 @@ export const TEST_RECEIVED_REQUEST_TABLE_DATA = [
         reqState: 2
     },
     {
+        id: 4,
         sender: {
             id: 4,
             first_name: 'Chamika',
@@ -128,6 +136,7 @@ export const TEST_RECEIVED_REQUEST_TABLE_DATA = [
 
 export const TEST_HISTORY_TABLE_DATA = [
     {
+        id: 1,
         receiver: {
             first_name: 'xyz',
             last_name: 'abc'
@@ -135,6 +144,7 @@ export const TEST_HISTORY_TABLE_DATA = [
         accepted_on: '2018-10-12'
     },
     {
+        id: 2,
         receiver: {
             first_name: 'addaw',
             last_name: 'aseq'
@@ -142,6 +152,7 @@ export const TEST_HISTORY_TABLE_DATA = [
         accepted_on: '2018-01-12'
     },
     {
+        id: 3,
         receiver: {
             first_name: 'teq',
             last_name: 'powel'
@@ -183,6 +194,7 @@ export const TEST_UPGRADE_REQ_TABLE_DATA = [
 
 export const TEST_DONATION_TABLE_DATA = [
     {
+        id: 1,
         receiver: {
             first_name: 'xyz',
             last_name: 'abc'
@@ -193,6 +205,7 @@ export const TEST_DONATION_TABLE_DATA = [
         },
     },
     {
+        id: 2,
         receiver: {
             first_name: 'addaw',
             last_name: 'aseq'
@@ -203,6 +216,7 @@ export const TEST_DONATION_TABLE_DATA = [
         },
     },
     {
+        id: 3,
         receiver: {
             first_name: 'teq',
             last_name: 'powel'

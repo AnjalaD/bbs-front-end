@@ -9,7 +9,7 @@ import { logout } from "actions";
 import { TESTING } from "config/config";
 import { USER_LOGOUT } from "config/api";
 import { DONOR_LOGOUT } from "config/api";
-import { setHeaders } from "util";
+import { setHeaders } from "util/helpers";
 
 const useStyles = makeStyles(styles);
 

@@ -6,7 +6,7 @@ import admin from 'reducers/admin';
 const allReducers = combineReducers({
     admin,
     currentUser,
-    isLoading: loading
+    loading
 })
 
 export default allReducers

@@ -22,13 +22,18 @@ export default function LoadingModal(props) {
             }}>
                 <GridContainer direction="column" style={{ alignItems: 'center' }}>
                     <CircularProgress disableShrink />
-                    <p>Please wait...</p>
+                    <p>{props.text}</p>
                 </GridContainer>
             </div>
         </Modal>
     )
 }
 
+LoadingModal.defaultProps = {
+    text: "Please wait..."
+}
+
 LoadingModal.propTypes = {
-    isLoading: PropTypes.bool
+    isLoading: PropTypes.bool,
+    text: PropTypes.any
 }

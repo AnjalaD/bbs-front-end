@@ -5,6 +5,7 @@ import CreateIcon from '@material-ui/icons/Create';
 import HistoryIcon from '@material-ui/icons/History';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 import Requests from 'views/TableList/Requests';
 import UserProfile from 'views/UserProfile/UserProfile';
@@ -15,6 +16,7 @@ import Login from 'views/Auth/Login';
 import UpgradeRequests from 'views/TableList/UpgradeRequests';
 import ReceivedRequests from 'views/TableList/ReceivedRequests';
 import Donations from 'views/TableList/Donations';
+import AdminLogin from 'views/Auth/AdminLogin';
 
 export const viewerRoutes = [
     {
@@ -72,16 +74,22 @@ export const donorRoutes = [
 
 export const guestRoutes = [
     {
+        path: "/",
+        name: "Login",
+        icon: CreateIcon,
+        component: Login
+    },
+    {
         path: "/register",
         name: "Register",
-        icon: CreateIcon,
+        icon: AddCircleOutlineIcon,
         component: Register
     },
     {
-        path: "/",
-        name: "Login",
-        icon: SearchIcon,
-        component: Login
+        path: "/admin-login",
+        name: "Admin Login",
+        icon: SupervisorAccountIcon,
+        component: AdminLogin
     }
 ];
 

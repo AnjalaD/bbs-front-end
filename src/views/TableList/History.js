@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import { DONOR_HISTORY } from "config/api";
 import { HISTORY_TABLE_HEADERS } from "config/tableData";
-import { setHeaders } from "util";
+import { setHeaders } from "util/helpers";
 import TableList from "components/Custom/TableList";
 
 import { TESTING } from "config/config";

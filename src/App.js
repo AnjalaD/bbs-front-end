@@ -14,21 +14,26 @@ import { makeStyles } from "@material-ui/core/styles";
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 import { Hidden } from '@material-ui/core';
 import LoadingModal from 'components/LoadingModal/LoadingModal';
-import AdminLogin from 'views/Auth/AdminLogin';
 import { adminRoutes } from 'routes';
 
 const useStyles = makeStyles(styles);
 
 function App() {
-  const createRoute = (routes) => (
-    routes.map((route, key) => (
+  const createRoutes = (routes) => {
+    const makeRoutes = routes.map((route, key) => (
       <Route path={route.path} component={route.component} key={key} exact />
-    ))
-  );
+    ));
+    return (
+      <Switch>
+        {makeRoutes}
+        < Redirect from="/" to={routes[0].path} />
+      </Switch >
+    )
+  };
 
   const { isLoggedIn, user } = useSelector(state => state.currentUser);
   const admin = useSelector(state => state.admin);
-  const isLoading = useSelector(state => state.isLoading);
+  const { isLoading, text } = useSelector(state => state.loading);
 
   const classes = useStyles();
 
@@ -61,11 +66,9 @@ function App() {
 
       <div className={classes.content}>
         <div className={classes.container}>
-          <Switch>
-            <Route path="/admin-login" component={AdminLogin} />
-            {createRoute(guestRoutes)}
-            <Redirect from="/" to="/" />
-          </Switch>
+          {/* routes for guest */}
+          {createRoutes(guestRoutes)}
+
         </div>
       </div>
     </div>
@@ -89,10 +92,8 @@ function App() {
 
         <div className={classes.content}>
           <div className={classes.container}>
-            <Switch>
-              {createRoute(userRoutes)}
-              <Redirect from="/" to="/sent-requests" />
-            </Switch>
+            {/* routes for user */}
+            {createRoutes(userRoutes)}
           </div>
         </div>
       </div>
@@ -115,6 +116,7 @@ function App() {
     <div>
       <LoadingModal
         isLoading={isLoading}
+        text={text}
       />
       <BrowserRouter>
         {display()}

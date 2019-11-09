@@ -17,8 +17,9 @@ import { USER_UPGRAGE, USER_UPDATE, USER_DELETE } from "config/api";
 import { DONOR_DOWNGRADE, DONOR_UPDATE, DONOR_DELETE } from "config/api";
 import { TESTING } from "config/config";
 import { userProfileFields } from "config/formData";
-import { setHeaders } from "util";
+import { setHeaders } from "util/helpers";
 import ProfileCard from "components/Custom/ProfileCard";
+import { end_loading } from "actions";
 
 const styles = {
     cardCategoryWhite: {
@@ -78,12 +79,12 @@ export default function UserProfile() {
                 method: 'PUT',
                 body: JSON.stringify(updatableUser)
             }
-            dispatch(set_loading(true));
+            dispatch(set_loading("Updating profile..."));
             //update user
             fetch(link[user.account_status], options)
                 .then(res => res.json())
                 .then(
-                    dispatch(set_loading(false))
+                    dispatch(end_loading())
                 )
                 .catch(err => console.log("update user error", err));
         }
@@ -101,12 +102,12 @@ export default function UserProfile() {
                 method: 'POST'
             }
             const link = [USER_UPGRAGE, DONOR_DOWNGRADE];
-            dispatch(set_loading(true));
+            dispatch(set_loading("Sending Request..."));
             //change user type
             fetch(link[user.account_status], options)
                 .then(res => res.json())
                 .then(
-                    dispatch(set_loading(false))
+                    dispatch(end_loading())
                 )
                 .catch(err => console.log('donor<=>viewer', err));
         }
@@ -121,12 +122,12 @@ export default function UserProfile() {
                 headers: setHeaders(token)
             }
             const link = [USER_DELETE, DONOR_DELETE];
-            dispatch(set_loading(true));
+            dispatch(set_loading("Deleting account..."));
             //deleting user type
             fetch(link[user.account_status], options)
                 .then(res => res.json())
                 .then(
-                    dispatch(set_loading(false))
+                    dispatch(end_loading())
                 )
                 .catch(err => console.log('delete donor', err));
         }

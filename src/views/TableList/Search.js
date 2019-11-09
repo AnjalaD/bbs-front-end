@@ -21,7 +21,9 @@ import { TEST_SEARCH_TABLE_DATA } from "config/testData";
 import { USER_SEARCH } from "config/api";
 import { set_loading } from "actions";
 import { TESTING } from "config/config";
-import { setHeaders } from "util";
+import { setHeaders } from "util/helpers";
+import CustomButton from "components/CustomButtons/Button";
+import { end_loading } from "actions";
 
 const styles = {
     cardCategoryWhite: {
@@ -68,10 +70,41 @@ export default function Search() {
                 donor.first_name + " " + donor.last_name,
                 donor.bloodGroup,
                 donor.telephone,
-                "request"
+                <CustomButton
+                    color="success"
+                    size="sm"
+                    onClick={() => requestHandler(donor.id)}
+                >
+                    Request
+                </CustomButton>
             ]
         ))
     );
+
+    const requestHandler = (id) => {
+        if (TESTING) {
+            setSeachResutls(searchResults.filter(donor => (donor.id) !== id));
+        } else {
+            const options = {
+                method: 'POST',
+                headers: setHeaders(token),
+                body: JSON.stringify({})
+            }
+
+            dispatch(set_loading("Requesting..."));
+            fetch('', options)
+                .then(res => res.json)
+                .then(res => {
+                    if (res) {
+                        dispatch(end_loading());
+                        setSeachResutls(searchResults.filter(donor => (donor.id) !== id));
+                    } else {
+                        console.log('donor request failed')
+                    }
+                })
+                .catch(err => console.log('donor request error', err))
+        }
+    }
 
     const searchHandler = () => {
         if (TESTING) {
@@ -86,14 +119,14 @@ export default function Search() {
             }
 
             //set loading view
-            dispatch(set_loading(true));
+            dispatch(set_loading("Searching for donors..."));
 
             //fetching search results...
             fetch(USER_SEARCH, options)
                 .then(res => res.json)
                 .then(
                     //remove loading view
-                    dispatch(set_loading(false))
+                    dispatch(end_loading())
                 )
                 .catch(err => console.log('fetch search results error', err))
         }

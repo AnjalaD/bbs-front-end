@@ -15,6 +15,7 @@ import { USER_SIGNUP } from "config/api";
 import InputSelector from "components/Custom/InputSelector";
 import { userRegisterFields } from "config/formData";
 import { login } from "actions";
+import { end_loading } from "actions";
 
 const styles = {
 	cardCategoryWhite: {
@@ -59,7 +60,7 @@ export default function Register() {
 
 	const registerHandler = () => {
 		//register logic
-		dispatch(set_loading(true));
+		dispatch(set_loading("Registration In Progress..."));
 		const options = {
 			method: 'POST',
 			body: JSON.stringify(user)
@@ -71,7 +72,7 @@ export default function Register() {
 		fetch(USER_SIGNUP, options)
 			.then(res => res.json())
 			.then(res => {
-				dispatch(set_loading(false));
+				dispatch(end_loading());
 				if (res) {
 					dispatch(login(res))
 				} else {

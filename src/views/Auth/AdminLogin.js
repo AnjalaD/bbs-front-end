@@ -15,8 +15,9 @@ import { useDispatch } from "react-redux";
 import { set_loading, set_admin } from "actions";
 
 import { TESTING } from "config/config";
-import { setHeaders } from "util";
+import { setHeaders } from "util/helpers";
 import { ADMIN_LOGIN } from "config/api";
+import { end_loading } from "actions";
 
 const styles = {
     cardCategoryWhite: {
@@ -61,7 +62,7 @@ export default function AdminLogin() {
                 body: JSON.stringify(user)
             }
             //display loading view
-            dispatch(set_loading(true));
+            dispatch(set_loading('Loggin In...'));
 
             //check admin login
             fetch(ADMIN_LOGIN, options)
@@ -69,7 +70,7 @@ export default function AdminLogin() {
                 .then(res => {
                     if (res) {
                         //remove loading view
-                        dispatch(set_admin(true), set_loading(false));
+                        dispatch(set_admin(true), end_loading());
                     } else {
                         console.log("wrong email or password");
                     }

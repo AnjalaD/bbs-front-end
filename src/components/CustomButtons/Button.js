@@ -12,7 +12,7 @@ import styles from "assets/jss/material-dashboard-react/components/buttonStyle.j
 
 const useStyles = makeStyles(styles);
 
-export default function RegularButton(props) {
+export default function CustomButton(props) {
   const classes = useStyles();
   const {
     color,
@@ -47,7 +47,7 @@ export default function RegularButton(props) {
   );
 }
 
-RegularButton.propTypes = {
+CustomButton.propTypes = {
   color: PropTypes.oneOf([
     "primary",
     "info",

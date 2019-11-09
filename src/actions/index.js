@@ -12,9 +12,13 @@ export const update_profile = (newUser) => ({
     payload: newUser
 })
 
-export const set_loading = (isLoading) => ({
+export const set_loading = (loadingText = "Please wait...") => ({
     type: 'SET_LOADING',
-    payload: isLoading
+    payload: loadingText
+})
+
+export const end_loading = () => ({
+    type: 'END_LOADING'
 })
 
 export const set_admin = (setAdmin) => ({

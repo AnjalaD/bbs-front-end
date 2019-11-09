@@ -17,7 +17,8 @@ import { set_loading, login } from "actions";
 import { TEST_USER } from "config/testData";
 import { USER_LOGIN } from "config/api";
 import { TESTING } from "config/config";
-import { setHeaders } from "util";
+import { setHeaders } from "util/helpers";
+import { end_loading } from "actions";
 
 const styles = {
     cardCategoryWhite: {
@@ -65,7 +66,7 @@ export default function Login() {
                 body: JSON.stringify(user)
             }
             //display loading view
-            dispatch(set_loading(true));
+            dispatch(set_loading("Loggin In..."));
 
             //check login
             fetch(USER_LOGIN, options)
@@ -73,7 +74,7 @@ export default function Login() {
                 .then(res => {
                     if (res) {
                         //remove loading view
-                        dispatch(set_loading(false), login(res));
+                        dispatch(end_loading(), login(res));
                     } else {
                         console.log("wrong email or password");
                     }
