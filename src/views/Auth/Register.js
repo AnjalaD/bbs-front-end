@@ -12,7 +12,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import { set_loading } from "actions";
 import { USER_SIGNUP } from "config/api";
-import InputSelector from "components/CustomInput/InputSelector";
+import InputSelector from "components/Custom/InputSelector";
 import { userRegisterFields } from "config/formData";
 import { login } from "actions";
 

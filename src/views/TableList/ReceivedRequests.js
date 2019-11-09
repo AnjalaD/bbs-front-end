@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import TableList from "components/Table/TableList";
+import TableList from "components/Custom/TableList";
 
 import { RECEIVD_REQUEST_DATA_HEADERS } from "config/tableData";
 import { TEST_RECEIVED_REQUEST_TABLE_DATA } from "config/testData";

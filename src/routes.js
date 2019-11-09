@@ -39,6 +39,12 @@ export const viewerRoutes = [
 
 export const donorRoutes = [
     {
+        path: "/received-requests",
+        name: "Received Requests",
+        icon: ArrowDownwardIcon,
+        component: ReceivedRequests
+    },
+    {
         path: "/sent-requests",
         name: "Sent Requests",
         icon: ArrowUpwardIcon,
@@ -55,12 +61,6 @@ export const donorRoutes = [
         name: "User Profile",
         icon: PersonIcon,
         component: UserProfile
-    },
-    {
-        path: "/received-requests",
-        name: "Received Requests",
-        icon: ArrowDownwardIcon,
-        component: ReceivedRequests
     },
     {
         path: "/history",

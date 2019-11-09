@@ -8,20 +8,17 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
-import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import InputSelector from "components/CustomInput/InputSelector";
+import InputSelector from "components/Custom/InputSelector";
 
-
-import maleAvatar from "assets/img/faces/male.svg";
-import femaleAvatar from "assets/img/faces/female.svg";
 import { update_profile, set_loading, logout } from "actions";
 import { USER_UPGRAGE, USER_UPDATE, USER_DELETE } from "config/api";
 import { DONOR_DOWNGRADE, DONOR_UPDATE, DONOR_DELETE } from "config/api";
 import { TESTING } from "config/config";
 import { userProfileFields } from "config/formData";
 import { setHeaders } from "util";
+import ProfileCard from "components/Custom/ProfileCard";
 
 const styles = {
     cardCategoryWhite: {
@@ -138,13 +135,13 @@ export default function UserProfile() {
     const statusButton = [
         <Button round color="primary" onClick={upgradeHandler} >
             Be a Blood Donor
-    </Button>,
+        </Button>,
         <Button round color="warning" onClick={upgradeHandler} >
             Swicth To Basic Account
-    </Button>,
+        </Button>,
         <Button round disabled color="primary">
             Waiting...
-    </Button>
+        </Button>
     ];
 
     const formFields = function (fields) {
@@ -213,16 +210,9 @@ export default function UserProfile() {
                     }
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
-                    <Card profile>
-                        <CardAvatar profile>
-                            <img src={user.gender === "male" ? maleAvatar : femaleAvatar} alt="..." />
-                        </CardAvatar>
-                        <CardBody profile>
-                            <h5 className={classes.cardCategory}>{user.email}</h5>
-                            <h4 className={classes.cardTitle}>{user.first_name + " " + user.last_name}</h4>
-                            <h5 className={classes.cardCategory}>Tele. No: {user.telephone}</h5>
-                            <h5 className={classes.cardCategory}>Gender: {user.gender}</h5>
-                            <h5 className={classes.cardCategory}>Date of Birth: {user.birthday}</h5>
+                    <ProfileCard
+                        user={user}
+                        button={
                             <GridContainer justify="center" direction="column">
                                 <GridItem>
                                     {statusButton[user.account_status]}
@@ -231,8 +221,8 @@ export default function UserProfile() {
                                     <Button round size="sm" onClick={deleteHandler}>Delete Account</Button>
                                 </GridItem>
                             </GridContainer>
-                        </CardBody>
-                    </Card>
+                        }
+                    />
                 </GridItem>
             </GridContainer>
         </div>

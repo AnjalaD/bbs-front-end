@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 
-import TableList from "components/Table/TableList";
+import TableList from "components/Custom/TableList";
 import { DONATIONS_TABLE_HEADERS } from "config/tableData";
 import { ADMIN_VERIFY_DONATION } from "config/api";
 import { setHeaders } from "util";

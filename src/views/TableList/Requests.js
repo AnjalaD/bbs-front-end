@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import TableList from "components/Table/TableList";
+import TableList from "components/Custom/TableList";
 
 import { REQUEST_DATA_HEADERS } from "config/tableData";
 
