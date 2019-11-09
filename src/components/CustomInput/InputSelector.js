@@ -5,9 +5,7 @@ import CustomInput from 'components/CustomInput/CustomInput';
 import CustomSelect from 'components/CustomInput/CustomSelect';
 
 export default function InputSelector(props) {
-    const type = props.type;
-    delete props.type;
-    switch (type) {
+    switch (props.inputType) {
         case 'input':
             return <CustomInput {...props} />;
         case 'select':
@@ -15,4 +13,8 @@ export default function InputSelector(props) {
         default:
             return <CustomInput {...props} />;
     }
+}
+
+InputSelector.prototype = {
+    type: PropTypes.oneOf(['input', 'select']),
 }

@@ -8,9 +8,13 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import { REQUEST_DATA_HEADERS } from "config/tableData";
-import { TEST_REQUEST_TABLE_DATA } from "config/testData";
+
+import { ADMIN_ACCEP_VIEWER } from "config/api";
+import { UPDRAGE_REQ_TABLE_HEADERS } from "config/tableData";
+
 import { TESTING } from "config/config";
+import { TEST_UPGRADE_REQ_TABLE_DATA } from "config/testData";
+
 
 const styles = {
   cardCategoryWhite: {
@@ -44,28 +48,35 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function Requests() {
+export default function UpgradeRequests() {
   const classes = useStyles();
   const [requests, setRequests] = useState([]);
 
-  const statusMessage = ['Pending', 'Accepted', 'Rejected'];
-
   const formatRequestData = (requests) => (
-    requests.map(({ donor, reqState }) => (
+    requests.map((user) => (
       [
-        donor.first_name + " " + donor.last_name,
-        donor.bloodGroup,
-        donor.telephone,
-        statusMessage[reqState]
+        user.first_name + " " + user.last_name,
+        user.email,
+        user.telephone
       ]
     ))
   );
 
   useEffect(() => {
-    console.log('fetching requests...');
     if (TESTING) {
-      setRequests(TEST_REQUEST_TABLE_DATA);
+      setRequests(TEST_UPGRADE_REQ_TABLE_DATA);
+    } else {
+      const options = {
+        method: 'POST'
+      }
+
+      console.log('fetching upgrade requests...');
+      fetch(ADMIN_ACCEP_VIEWER, options)
+        .then(res => res.json())
+        .then()
+        .catch(err => console.log('fetchin upgrade requests error', err))
     }
+
   }, []);
 
   return (
@@ -73,7 +84,7 @@ export default function Requests() {
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>Sent Requests</h4>
+            <h4 className={classes.cardTitleWhite}>Requests</h4>
             <p className={classes.cardCategoryWhite}>
               Here is a subtitle for this table
             </p>
@@ -81,7 +92,7 @@ export default function Requests() {
           <CardBody>
             <Table
               tableHeaderColor="primary"
-              tableHead={REQUEST_DATA_HEADERS}
+              tableHead={UPDRAGE_REQ_TABLE_HEADERS}
               tableData={formatRequestData(requests)}
             />
           </CardBody>

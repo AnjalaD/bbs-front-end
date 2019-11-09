@@ -34,168 +34,110 @@ export const bloodGroups = [
 ];
 
 
-export const userProfileFields = (onChangeHandler, user) => [
+export const userProfileFields = [
     {
-        type: 'Input',
+        inputType: 'Input',
         labelText: 'First Name',
-
         id: 'first-name',
-        inputProps: {
-            type: 'text',
-            value: user.first_name,
-            name: 'first_name',
-            onChange: onChangeHandler
-        }
+        type: 'text',
+        name: 'first_name'
     },
     {
         labelText: "Last Name",
-        type: "Input",
+        inputType: "input",
         id: "last-name",
         name: "last_name",
-        inputProps: {
-            type: 'text',
-            value: user.last_name,
-            name: 'last_name',
-            onChange: onChangeHandler
-        }
+        type: 'text'
     },
     {
         labelText: "Email address",
-        type: "Input",
+        inputType: "input",
         id: "email-address",
-        inputProps: {
-            disabled: true,
-            type: 'email',
-            value: user.email,
-            name: 'email',
-            onChange: onChangeHandler
-        }
+        disabled: true,
+        type: 'email',
+        name: 'email',
     },
     {
         labelText: "Telephone no.",
-        type: "Input",
+        inputType: "input",
         id: "telephone",
-        inputProps: {
-            type: 'text',
-            value: user.telephone,
-            name: 'telephone',
-            onChange: onChangeHandler
-        }
+        type: 'text',
+        name: 'telephone',
+
     },
     {
         labelText: "Date of Birth",
-        type: "Input",
+        inputType: "input",
         id: "birthday",
-        inputProps: {
-            type: 'text',
-            value: user.birthday,
-            name: 'birthday',
-            onChange: onChangeHandler
-        }
+        type: 'text',
+        name: 'birthday'
     },
     {
         labelText: "Gender",
-        type: "Select",
+        inputType: "input",
         id: "gender",
-        inputProps: {
-            disabled: true,
-            type: 'text',
-            value: user.gender,
-            name: 'gender',
-            onChange: onChangeHandler
-        }
+        disabled: true,
+        type: 'text',
+        name: 'gender'
     }
 ];
 
 
-export const userRegisterFields = (onChangeHandler, user) => [
+export const userRegisterFields = [
     {
         labelText: 'First Name',
-        type: 'Input',
+        inputType: 'input',
         id: 'first-name',
-        inputProps: {
-            type: 'text',
-            value: user.first_name,
-            name: 'first_name',
-            onChange: onChangeHandler
-        }
+        type: 'text',
+        name: 'first_name'
     },
     {
         labelText: "Last Name",
-        type: "Input",
+        inputType: "input",
         id: "last-name",
         name: "last_name",
-        inputProps: {
-            type: 'text',
-            value: user.last_name,
-            name: 'last_name',
-            onChange: onChangeHandler
-        }
+        type: 'text'
     },
     {
         labelText: "Email address",
-        type: "Input",
+        inputType: "input",
         id: "email-address",
-        inputProps: {
-            type: 'email',
-            value: user.email,
-            name: 'email',
-            onChange: onChangeHandler
-        }
+        type: 'email',
+        name: 'email'
     },
     {
         labelText: "Telephone no.",
-        type: "Input",
+        inputType: "input",
         id: "telephone",
-        inputProps: {
-            type: 'text',
-            value: user.telephone,
-            name: 'telephone',
-            onChange: onChangeHandler
-        }
+        type: 'text',
+        name: 'telephone'
     },
     {
         labelText: "Date of Birth",
-        type: "Input",
+        inputType: "input",
         id: "birthday",
-        inputProps: {
-            type: 'text',
-            value: user.birthday,
-            name: 'birthday',
-            onChange: onChangeHandler
-        }
+        type: 'text',
+        name: 'birthday'
     },
     {
         labelText: "Gender",
-        type: "Select",
+        inputType: "input",
         id: "gender",
-        inputProps: {
-            type: 'text',
-            value: user.gender,
-            name: 'gender',
-            onChange: onChangeHandler
-        }
+        type: 'text',
+        name: 'gender'
     },
     {
         labelText: "Password",
-        type: "Input",
+        inputType: "input",
         id: "password",
-        inputProps: {
-            type: 'password',
-            value: user.password,
-            name: 'password',
-            onChange: onChangeHandler
-        }
+        type: 'password',
+        name: 'password',
     },
     {
         labelText: "Confirm Password",
-        type: "Input",
+        inputType: "input",
         id: "confirm",
-        inputProps: {
-            type: 'password',
-            value: user.confirm,
-            name: 'confirm',
-            onChange: onChangeHandler
-        }
+        type: 'password',
+        name: 'confirm',
     }
 ];

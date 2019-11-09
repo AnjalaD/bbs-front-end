@@ -8,7 +8,7 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import Sidebar from 'components/Sidebar/Sidebar';
 import Navbar from 'components/Navbars/Navbar';
-import { userRoutes, guestRoutes } from 'routes';
+import { donorRoutes, viewerRoutes, guestRoutes } from 'routes';
 
 import { makeStyles } from "@material-ui/core/styles";
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
@@ -25,7 +25,10 @@ function App() {
   );
 
   const isLoggedIn = useSelector(state => state.currentUser.isLoggedIn);
+  const user = useSelector(state => state.currentUser.user);
   const isLoading = useSelector(state => state.isLoading);
+
+  const userRoutes = (user !== null && user.account_state === 1) ? [...donorRoutes, ...viewerRoutes] : viewerRoutes;
 
   const classes = useStyles();
 
@@ -88,7 +91,7 @@ function App() {
           <div className={classes.container}>
             <Switch>
               {createRoute(userRoutes)}
-              <Redirect from="/" to="/requests" />
+              <Redirect from="/" to="/sent-requests" />
             </Switch>
           </div>
         </div>

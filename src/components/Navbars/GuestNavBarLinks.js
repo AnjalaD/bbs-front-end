@@ -9,13 +9,18 @@ import styles from "assets/jss/material-dashboard-react/components/headerLinksSt
 
 const useStyles = makeStyles(styles);
 
+const linkStyles = {
+  textDecoration: 'none',
+  margin: '10px'
+}
+
 export default function GuestNavbarLinks() {
   const classes = useStyles();
 
   return (
     <div>
       <div className={classes.manager}>
-        <Link to="/">
+        <Link to="/" style={linkStyles}>
           <Button
             color="primary"
             className={classes.buttonLink}
@@ -26,10 +31,9 @@ export default function GuestNavbarLinks() {
         </Link>
       </div>
       <div className={classes.manager}>
-        <Link className={classes.linkText} to="/register">
+        <Link to="/register" style={linkStyles}>
           <Button
             color="primary"
-            className={classes.buttonLink}
             round
           >
             Register

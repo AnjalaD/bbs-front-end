@@ -2,19 +2,24 @@ import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import PersonIcon from '@material-ui/icons/Person';
 import SearchIcon from '@material-ui/icons/Search';
 import CreateIcon from '@material-ui/icons/Create';
-
+import HistoryIcon from '@material-ui/icons/History';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
 import Requests from 'views/TableList/Requests';
 import UserProfile from 'views/UserProfile/UserProfile';
 import Search from 'views/TableList/Search';
+import History from 'views/TableList/History';
 import Register from 'views/Auth/Register';
 import Login from 'views/Auth/Login';
+import UpgradeRequests from 'views/TableList/UpgradeRequests';
+import ReceivedRequests from 'views/TableList/ReceivedRequests';
 
-export const userRoutes = [
+export const viewerRoutes = [
     {
-        path: "/requests",
-        name: "Requests",
-        icon: SupervisorAccountIcon,
+        path: "/sent-requests",
+        name: "Sent Requests",
+        icon: ArrowUpwardIcon,
         component: Requests
     },
     {
@@ -31,6 +36,21 @@ export const userRoutes = [
     }
 ]
 
+export const donorRoutes = [
+    {
+        path: "/received-requests",
+        name: "Received Requests",
+        icon: ArrowDownwardIcon,
+        component: ReceivedRequests
+    },
+    {
+        path: "/history",
+        name: "Donation History",
+        icon: HistoryIcon,
+        component: History
+    },
+];
+
 export const guestRoutes = [
     {
         path: "/register",
@@ -44,4 +64,13 @@ export const guestRoutes = [
         icon: SearchIcon,
         component: Login
     }
-]
+];
+
+export const adminRoutes = [
+    {
+        path: "/upgrade-requests",
+        name: "Upgrade Requests",
+        icon: ArrowUpwardIcon,
+        component: UpgradeRequests
+    }
+];

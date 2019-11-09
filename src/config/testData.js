@@ -5,7 +5,7 @@ export const TEST_USER = {
     telephone: '0719090909',
     gender: 'male',
     birthday: '1997-09-18',
-    account_status: 0
+    account_state: 1
 }
 
 export const TEST_SEARCH_TABLE_DATA = [
@@ -33,8 +33,6 @@ export const TEST_SEARCH_TABLE_DATA = [
         bloodGroup: 'A-',
         telephone: '0711231234'
     }
-
-
 ]
 
 export const TEST_REQUEST_TABLE_DATA = [
@@ -76,6 +74,45 @@ export const TEST_REQUEST_TABLE_DATA = [
     }
 ];
 
+export const TEST_RECEIVED_REQUEST_TABLE_DATA = [
+    {
+        sender: {
+            first_name: 'Thumula',
+            last_name: 'Meegamuwa',
+            email: '123@e.lea',
+            telephone: '0711231234'
+        },
+        reqState: 1
+    },
+    {
+        sender: {
+            first_name: 'Ruchin',
+            last_name: 'Meegamuwa',
+            email: '123@e.lea',
+            telephone: '071112334'
+        },
+        reqState: 0
+    },
+    {
+        sender: {
+            first_name: 'Bucha',
+            last_name: 'Meegamuwa',
+            email: '123@e.lea',
+            telephone: '0711231234'
+        },
+        reqState: 2
+    },
+    {
+        sender: {
+            first_name: 'Chamika',
+            last_name: 'Meegamuwa',
+            email: '123@e.lea',
+            telephone: '0711231234'
+        },
+        reqState: 1
+    }
+];
+
 export const TEST_HISTORY_TABLE_DATA = [
     {
         receiver: {
@@ -97,5 +134,32 @@ export const TEST_HISTORY_TABLE_DATA = [
             last_name: 'powel'
         },
         accepted_on: '2018-05-12'
+    }
+]
+
+export const TEST_UPGRADE_REQ_TABLE_DATA = [
+    {
+        first_name: 'Thumula',
+        last_name: 'Meegamuwa',
+        email: '123@a.com',
+        telephone: '0711231234'
+    },
+    {
+        first_name: 'Ruchin',
+        last_name: 'Meegamuwa',
+        email: '123@a.com',
+        telephone: '071112334'
+    },
+    {
+        first_name: 'Bucha',
+        last_name: 'Meegamuwa',
+        email: '123@a.com',
+        telephone: '0711231234'
+    },
+    {
+        first_name: 'Chamika',
+        last_name: 'Meegamuwa',
+        email: '123@a.com',
+        telephone: '0711231234'
     }
 ]

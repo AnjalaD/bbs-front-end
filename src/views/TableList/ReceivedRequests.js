@@ -8,8 +8,9 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import { REQUEST_DATA_HEADERS } from "config/tableData";
-import { TEST_REQUEST_TABLE_DATA } from "config/testData";
+
+import { RECEIVD_REQUEST_DATA_HEADERS } from "config/tableData";
+import { TEST_RECEIVED_REQUEST_TABLE_DATA } from "config/testData";
 import { TESTING } from "config/config";
 
 const styles = {
@@ -44,27 +45,24 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function Requests() {
+export default function ReceivedRequests() {
   const classes = useStyles();
-  const [requests, setRequests] = useState([]);
+  const [receivedRequests, setReceivedRequests] = useState([]);
 
-  const statusMessage = ['Pending', 'Accepted', 'Rejected'];
-
-  const formatRequestData = (requests) => (
-    requests.map(({ donor, reqState }) => (
+  const formatReceivedRequestData = (requests) => (
+    requests.map(({ sender, reqState }) => (
       [
-        donor.first_name + " " + donor.last_name,
-        donor.bloodGroup,
-        donor.telephone,
-        statusMessage[reqState]
+        sender.first_name + " " + sender.last_name,
+        sender.email,
+        sender.telephone
       ]
     ))
   );
 
   useEffect(() => {
-    console.log('fetching requests...');
+    console.log('fetching received requests...');
     if (TESTING) {
-      setRequests(TEST_REQUEST_TABLE_DATA);
+      setReceivedRequests(TEST_RECEIVED_REQUEST_TABLE_DATA);
     }
   }, []);
 
@@ -73,7 +71,7 @@ export default function Requests() {
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>Sent Requests</h4>
+            <h4 className={classes.cardTitleWhite}>Received Requests</h4>
             <p className={classes.cardCategoryWhite}>
               Here is a subtitle for this table
             </p>
@@ -81,8 +79,8 @@ export default function Requests() {
           <CardBody>
             <Table
               tableHeaderColor="primary"
-              tableHead={REQUEST_DATA_HEADERS}
-              tableData={formatRequestData(requests)}
+              tableHead={RECEIVD_REQUEST_DATA_HEADERS}
+              tableData={formatReceivedRequestData(receivedRequests)}
             />
           </CardBody>
         </Card>

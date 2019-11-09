@@ -13,6 +13,8 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import { set_loading } from "actions";
 import { USER_SIGNUP } from "config/api";
+import InputSelector from "components/CustomInput/InputSelector";
+import { userRegisterFields } from "config/formData";
 
 const styles = {
 	cardCategoryWhite: {
@@ -77,6 +79,29 @@ export default function Register() {
 			.catch(err => console.log('register api call error', err))
 	}
 
+	const formFields = function (fields) {
+		return (
+			fields.map((field, key) => (
+				< GridItem xs={12} sm={12} md={6} key={key}>
+					<InputSelector
+						type={field.type}
+						id={field.id}
+						labelText={field.labelText}
+						formControlProps={{
+							fullWidth: true
+						}}
+						inputProps={{
+							type: field.type,
+							name: field.name,
+							value: user[field.name],
+							onChange: onChangeHandler
+						}}
+					/>
+				</ GridItem>
+			))
+		)
+	}(userRegisterFields);
+
 	const classes = useStyles();
 	return (
 		<div>
@@ -89,137 +114,8 @@ export default function Register() {
 						</CardHeader>
 						<CardBody>
 							<GridContainer>
-								<GridItem xs={12} sm={12} md={6}>
-									<CustomInput
-										labelText="First Name"
-										id="first-name"
-										formControlProps={{
-											fullWidth: true
-										}}
-										value
-										inputProps={{
-											type: 'text',
-											value: user.first_name,
-											name: 'first_name',
-											onChange: onChangeHandler
-										}}
-									/>
-								</GridItem>
-								<GridItem xs={12} sm={12} md={6}>
-									<CustomInput
-										labelText="Last Name"
-										id="last-name"
-										name="last_name"
-										formControlProps={{
-											fullWidth: true
-										}}
-										inputProps={{
-											type: 'text',
-											value: user.last_name,
-											name: 'last_name',
-											onChange: onChangeHandler
-										}}
-									/>
-								</GridItem>
-							</GridContainer>
-							{/* line 2 */}
-							<GridContainer>
-								<GridItem xs={12} sm={12} md={6}>
-									<CustomInput
-										labelText="Email address"
-										id="email-address"
-										formControlProps={{
-											fullWidth: true
-										}}
-										inputProps={{
-											type: 'email',
-											value: user.email,
-											name: 'email',
-											onChange: onChangeHandler
-										}}
-									/>
-								</GridItem>
-								<GridItem xs={12} sm={12} md={6}>
-									<CustomInput
-										labelText="Telephone no."
-										id="telephone"
-										formControlProps={{
-											fullWidth: true
-										}}
-										inputProps={{
-											type: 'text',
-											value: user.telephone,
-											name: 'telephone',
-											onChange: onChangeHandler
-										}}
-									/>
-								</GridItem>
-							</GridContainer>
-							{/* line 3 */}
-							<GridContainer>
-								<GridItem xs={12} sm={12} md={6}>
-									<CustomInput
-										labelText="Date of Birth"
-										id="birthday"
-										formControlProps={{
-											fullWidth: true
-										}}
-										inputProps={{
-											type: 'text',
-											value: user.birthday,
-											name: 'birthday',
-											onChange: onChangeHandler
-										}}
-									/>
-								</GridItem>
-								<GridItem xs={12} sm={12} md={6}>
-									<CustomInput
-										labelText="Gender"
-										id="gender"
-										formControlProps={{
-											fullWidth: true
-										}}
-										inputProps={{
-											type: 'text',
-											value: user.gender,
-											name: 'gender',
-											onChange: onChangeHandler
-										}}
-									/>
-								</GridItem>
-							</GridContainer>
-							{/* line 4 */}
-							<GridContainer>
-								<GridItem xs={12} sm={12} md={6}>
-									<CustomInput
-										labelText="Password"
-										id="password"
-										formControlProps={{
-											fullWidth: true
-										}}
-										inputProps={{
-											type: 'text',
-											value: user.password,
-											name: 'password',
-											onChange: onChangeHandler
-										}}
-									/>
-								</GridItem>
-								<GridItem xs={12} sm={12} md={6}>
-									<CustomInput
-										labelText="Confirm Password"
-										id="confirm"
-										formControlProps={{
-											fullWidth: true
-										}}
-										inputProps={{
-											type: 'text',
-											value: user.confirm,
-											name: 'confirm',
-											onChange: onChangeHandler
-										}}
-									/>
-								</GridItem>
+								{/* register form fields */}
+								{formFields}
 							</GridContainer>
 						</CardBody>
 						<CardFooter>
