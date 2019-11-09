@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -15,6 +14,7 @@ import { set_loading } from "actions";
 import { USER_SIGNUP } from "config/api";
 import InputSelector from "components/CustomInput/InputSelector";
 import { userRegisterFields } from "config/formData";
+import { login } from "actions";
 
 const styles = {
 	cardCategoryWhite: {
@@ -71,9 +71,11 @@ export default function Register() {
 		fetch(USER_SIGNUP, options)
 			.then(res => res.json())
 			.then(res => {
+				dispatch(set_loading(false));
 				if (res) {
-					// remove loading view
-					dispatch(set_loading(false));
+					dispatch(login(res))
+				} else {
+					console.log("registration failed");
 				}
 			})
 			.catch(err => console.log('register api call error', err))

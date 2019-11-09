@@ -38,6 +38,24 @@ export const viewerRoutes = [
 
 export const donorRoutes = [
     {
+        path: "/sent-requests",
+        name: "Sent Requests",
+        icon: ArrowUpwardIcon,
+        component: Requests
+    },
+    {
+        path: "/search",
+        name: "Search Donors",
+        icon: SearchIcon,
+        component: Search
+    },
+    {
+        path: "/profile",
+        name: "User Profile",
+        icon: PersonIcon,
+        component: UserProfile
+    },
+    {
         path: "/received-requests",
         name: "Received Requests",
         icon: ArrowDownwardIcon,

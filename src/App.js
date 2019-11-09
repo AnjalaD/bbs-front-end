@@ -28,7 +28,7 @@ function App() {
   const user = useSelector(state => state.currentUser.user);
   const isLoading = useSelector(state => state.isLoading);
 
-  const userRoutes = (user !== null && user.account_state === 1) ? [...donorRoutes, ...viewerRoutes] : viewerRoutes;
+  const userRoutes = (user !== null && user.account_status === 1) ? [donorRoutes,] : viewerRoutes;
 
   const classes = useStyles();
 

@@ -1,5 +1,6 @@
 const init = {
     isLoggedIn: false,
+    token: null,
     user: null
 }
 
@@ -9,12 +10,14 @@ const currentUser = (state = init, action) => {
         case 'LOGIN':
             return ({
                 isLoggedIn: true,
-                user: action.payload
+                user: action.payload.user,
+                token: action.payload.token
             });
         case 'LOGOUT':
             return ({
                 isLoggedIn: false,
-                user: null
+                user: null,
+                token: null
             });
         case 'UPDATE_PROFILE':
             return (Object.assign({}, state, {

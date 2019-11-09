@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -12,6 +13,7 @@ import { DONOR_HISTORY } from "config/api";
 import { HISTORY_TABLE_HEADERS } from "config/tableData";
 import { TESTING } from "config/config";
 import { TEST_HISTORY_TABLE_DATA } from "config/testData";
+import { setHeaders } from "util";
 
 const styles = {
   cardCategoryWhite: {
@@ -47,6 +49,7 @@ const useStyles = makeStyles(styles);
 
 export default function History() {
   const classes = useStyles();
+  const token = useSelector(({ currentUser }) => currentUser.token);
   const [history, setHistory] = useState([]);
 
   const formatHistoryData = (requests) => (
@@ -63,7 +66,9 @@ export default function History() {
       setHistory(TEST_HISTORY_TABLE_DATA);
     } else {
       const options = {
-        method: 'POST'
+        method: 'POST',
+        headers: setHeaders(),
+        body: JSON.stringify({})
       }
 
       console.log('fetching history...');
@@ -73,7 +78,7 @@ export default function History() {
         .catch(err => console.log('fetching history error', err))
     }
 
-  }, []);
+  }, [token]);
 
   return (
     <GridContainer>

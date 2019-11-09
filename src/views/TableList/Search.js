@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -21,6 +21,7 @@ import { TEST_SEARCH_TABLE_DATA } from "config/testData";
 import { USER_SEARCH } from "config/api";
 import { set_loading } from "actions";
 import { TESTING } from "config/config";
+import { setHeaders } from "util";
 
 const styles = {
     cardCategoryWhite: {
@@ -56,6 +57,8 @@ const useStyles = makeStyles(styles);
 
 export default function Search() {
     const dispatch = useDispatch();
+    const token = useSelector(({ currentUser }) => currentUser.token);
+
     const [searchValue, setSearchValue] = useState('');
     const [searchResults, setSeachResutls] = useState([]);
 
@@ -76,9 +79,10 @@ export default function Search() {
         } else {
             const options = {
                 method: 'POST',
-                body: {
+                headers: setHeaders(token),
+                body: JSON.stringify({
                     search: searchValue
-                }
+                })
             }
 
             //set loading view

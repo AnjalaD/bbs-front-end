@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -14,6 +15,7 @@ import { UPDRAGE_REQ_TABLE_HEADERS } from "config/tableData";
 
 import { TESTING } from "config/config";
 import { TEST_UPGRADE_REQ_TABLE_DATA } from "config/testData";
+import { setHeaders } from "util";
 
 
 const styles = {
@@ -50,6 +52,7 @@ const useStyles = makeStyles(styles);
 
 export default function UpgradeRequests() {
   const classes = useStyles();
+  const token = useSelector(state => state.currentUser.token)
   const [requests, setRequests] = useState([]);
 
   const formatRequestData = (requests) => (
@@ -67,7 +70,9 @@ export default function UpgradeRequests() {
       setRequests(TEST_UPGRADE_REQ_TABLE_DATA);
     } else {
       const options = {
-        method: 'POST'
+        method: 'POST',
+        headers: setHeaders(token),
+        body: JSON.stringify({})
       }
 
       console.log('fetching upgrade requests...');
@@ -77,7 +82,7 @@ export default function UpgradeRequests() {
         .catch(err => console.log('fetchin upgrade requests error', err))
     }
 
-  }, []);
+  }, [token]);
 
   return (
     <GridContainer>

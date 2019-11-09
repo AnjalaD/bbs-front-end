@@ -24,6 +24,8 @@ import InputSelector from "components/CustomInput/InputSelector";
 import { userProfileFields } from "config/formData";
 import { USER_DELETE } from "config/api";
 import { logout } from "actions";
+import { setHeaders } from "util";
+import { DONOR_UPDATE } from "config/api";
 
 const styles = {
     cardCategoryWhite: {
@@ -50,6 +52,7 @@ export default function UserProfile() {
     const classes = useStyles();
 
     const user = useSelector(({ currentUser }) => currentUser.user);
+    const token = useSelector(({ currentUser }) => currentUser.token);
     const dispatch = useDispatch();
 
     const initUser = {
@@ -77,12 +80,15 @@ export default function UserProfile() {
         if (TESTING) {
             dispatch(update_profile(updatableUser));
         } else {
+            const link = [USER_UPDATE, DONOR_UPDATE];
             const options = {
-                method: 'PUT'
+                headers: setHeaders(token),
+                method: 'PUT',
+                body: JSON.stringify(updatableUser)
             }
             dispatch(set_loading(true));
             //update user
-            fetch(USER_UPDATE, options)
+            fetch(link[user.account_status], options)
                 .then(res => res.json())
                 .then(
                     dispatch(set_loading(false))
@@ -91,22 +97,24 @@ export default function UserProfile() {
         }
     }
 
-    const upgradeHandler = (userState) => {
+    const upgradeHandler = () => {
         if (TESTING) {
             const status = [1, 0];
             dispatch(update_profile(Object.assign({}, user, {
-                account_state: status[userState]
+                account_status: status[user.account_status]
             })))
         } else {
             const options = {
-                method: 'POST'
+                headers: setHeaders(token),
+                method: 'POST',
+                body: JSON.stringify({})
             }
             const link = [USER_UPGRAGE, DONOR_DOWNGRADE];
 
             dispatch(set_loading(true));
 
             //change user type
-            fetch(link[userState], options)
+            fetch(link[user.account_status], options)
                 .then(res => res.json())
                 .then(
                     dispatch(set_loading(false))
@@ -120,7 +128,9 @@ export default function UserProfile() {
             dispatch(logout());
         } else {
             const options = {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: setHeaders(token),
+                body: JSON.stringify({})
             }
 
             dispatch(set_loading(true));
@@ -136,10 +146,10 @@ export default function UserProfile() {
     }
 
     const statusButton = [
-        <Button round color="primary" onClick={() => upgradeHandler(user.account_state)} >
+        <Button round color="primary" onClick={upgradeHandler} >
             Be a Blood Donor
     </Button>,
-        <Button round color="warning" onClick={() => upgradeHandler(user.account_state)} >
+        <Button round color="warning" onClick={upgradeHandler} >
             Swicth To Basic Account
     </Button>,
         <Button round disabled color="primary">
@@ -196,7 +206,7 @@ export default function UserProfile() {
                             </Button>
                         </CardFooter>
                     </Card>
-                    {user.account_state === 1 ?
+                    {user.account_status === 1 ?
                         <Card>
                             <CardHeader color="primary">
                                 <h4 className={classes.cardTitleWhite}>Donor Details</h4>
@@ -225,7 +235,7 @@ export default function UserProfile() {
                             <h5 className={classes.cardCategory}>Date of Birth: {user.birthday}</h5>
                             <GridContainer justify="center" direction="column">
                                 <GridItem>
-                                    {statusButton[user.account_state]}
+                                    {statusButton[user.account_status]}
                                 </GridItem>
                                 <GridItem>
                                     <Button round size="sm" onClick={deleteHandler}>Delete Account</Button>
