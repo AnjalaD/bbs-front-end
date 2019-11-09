@@ -16,3 +16,8 @@ export const set_loading = (isLoading) => ({
     type: 'SET_LOADING',
     payload: isLoading
 })
+
+export const set_admin = (setAdmin) => ({
+    type: 'SET_ADMIN',
+    payload: setAdmin
+})

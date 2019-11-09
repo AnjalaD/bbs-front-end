@@ -148,7 +148,7 @@ export const TEST_HISTORY_TABLE_DATA = [
         },
         accepted_on: '2018-05-12'
     }
-]
+];
 
 export const TEST_UPGRADE_REQ_TABLE_DATA = [
     {
@@ -178,5 +178,38 @@ export const TEST_UPGRADE_REQ_TABLE_DATA = [
         last_name: 'Meegamuwa',
         email: '123@a.com',
         telephone: '0711231234'
+    }
+];
+
+export const TEST_DONATION_TABLE_DATA = [
+    {
+        receiver: {
+            first_name: 'xyz',
+            last_name: 'abc'
+        },
+        donor: {
+            first_name: 'xyz',
+            last_name: 'abc'
+        },
+    },
+    {
+        receiver: {
+            first_name: 'addaw',
+            last_name: 'aseq'
+        },
+        donor: {
+            first_name: 'xyz',
+            last_name: 'abc'
+        },
+    },
+    {
+        receiver: {
+            first_name: 'teq',
+            last_name: 'powel'
+        },
+        donor: {
+            first_name: 'xyz',
+            last_name: 'abc'
+        },
     }
 ]

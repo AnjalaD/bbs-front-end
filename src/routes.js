@@ -14,6 +14,7 @@ import Register from 'views/Auth/Register';
 import Login from 'views/Auth/Login';
 import UpgradeRequests from 'views/TableList/UpgradeRequests';
 import ReceivedRequests from 'views/TableList/ReceivedRequests';
+import Donations from 'views/TableList/Donations';
 
 export const viewerRoutes = [
     {
@@ -90,5 +91,11 @@ export const adminRoutes = [
         name: "Upgrade Requests",
         icon: ArrowUpwardIcon,
         component: UpgradeRequests
+    },
+    {
+        path: "/donations",
+        name: "Donations",
+        icon: SupervisorAccountIcon,
+        component: Donations
     }
 ];

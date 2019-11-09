@@ -47,8 +47,7 @@ const useStyles = makeStyles(styles);
 export default function UserProfile() {
     const classes = useStyles();
 
-    const user = useSelector(({ currentUser }) => currentUser.user);
-    const token = useSelector(({ currentUser }) => currentUser.token);
+    const { user, token } = useSelector(({ currentUser }) => currentUser);
     const dispatch = useDispatch();
 
     const initUser = {

@@ -38,6 +38,8 @@ export const DONOR_LOGOUT = "api/donors/logout"
 // ADMIN ROUTES
 export const ADMIN_LOGIN = HOST + '';
 //
+export const ADMIN_VERIFY_DONATION = HOST + '';
+//
 export const ADMIN_SEARCH = HOST + "api/admin/search"
 //  POST search
 export const ADMIN_DELETE_USER = HOST + "api/admin/delete"
