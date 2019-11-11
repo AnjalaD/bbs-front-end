@@ -15,20 +15,19 @@ const useStyles = makeStyles(styles);
 
 export default function UserNavbarLinks() {
   const dispatch = useDispatch();
-  const { user, token } = useSelector(state => state.currentUser.token);
+  const user = useSelector(state => state.currentUser.user);
 
   const logoutHandler = () => {
     if (TESTING) {
       dispatch(logout());
     } else {
-      const link = [USER_LOGOUT, DONOR_LOGOUT];
 
       const options = {
         method: 'POST',
-        headers: setHeaders(token)
+        headers: setHeaders(user.token)
       }
 
-      fetch(link[user.account_status], options)
+      fetch(user.is_donor ? DONOR_LOGOUT : USER_LOGOUT, options)
         .then(res => res.json())
         .then(res => {
           if (res) {

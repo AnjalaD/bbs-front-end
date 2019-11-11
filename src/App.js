@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import bgImage from "assets/img/sidebar-2.jpg";
 import './App.css';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import Sidebar from 'components/Sidebar/Sidebar';
 import Navbar from 'components/Navbars/Navbar';
-import { donorRoutes, viewerRoutes, guestRoutes } from 'routes';
+import { donorRoutes, viewerRoutes, guestRoutes, adminRoutes } from 'routes';
 
 import { makeStyles } from "@material-ui/core/styles";
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 import { Hidden } from '@material-ui/core';
+import AddAlert from "@material-ui/icons/AddAlert";
+
 import LoadingModal from 'components/LoadingModal/LoadingModal';
-import { adminRoutes } from 'routes';
+import Snackbar from 'components/Snackbar/Snackbar';
+import { close_notification } from 'actions';
 
 const useStyles = makeStyles(styles);
 
@@ -31,9 +34,21 @@ function App() {
     )
   };
 
-  const { isLoggedIn, user } = useSelector(state => state.currentUser);
-  const admin = useSelector(state => state.admin);
-  const { isLoading, text } = useSelector(state => state.loading);
+  const dispatch = useDispatch();
+  const reduxState = useSelector(state => state);
+  const { isLoggedIn, user } = reduxState.currentUser;
+  const admin = reduxState.admin;
+  const { isLoading, text } = reduxState.loading;
+  const notification = reduxState.notification;
+
+
+  useEffect(() => {
+    if (notification.isSet) {
+      setTimeout(() => {
+        dispatch(close_notification());
+      }, 4000)
+    }
+  }, [notification.isSet, dispatch])
 
   const classes = useStyles();
 
@@ -103,9 +118,9 @@ function App() {
   const display = () => {
     if (admin === true) {
       return userView(adminRoutes);
-    } else if (isLoggedIn === true && user.account_status === 1) {
+    } else if (isLoggedIn === true && user.is_donor) {
       return userView(donorRoutes);
-    } else if (isLoggedIn === true && user.account_status === 0) {
+    } else if (isLoggedIn === true && !user.is_donor) {
       return userView(viewerRoutes);
     } else {
       return guestView;
@@ -114,6 +129,15 @@ function App() {
 
   return (
     <div>
+      <Snackbar
+        place="tc"
+        color={notification.type}
+        icon={AddAlert}
+        message={notification.text}
+        open={notification.isSet}
+        closeNotification={() => dispatch(close_notification())}
+        close
+      />
       <LoadingModal
         isLoading={isLoading}
         text={text}

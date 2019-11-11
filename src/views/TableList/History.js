@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { DONOR_HISTORY } from "config/api";
 import { HISTORY_TABLE_HEADERS } from "config/tableData";
 import { setHeaders } from "util/helpers";
 import TableList from "components/Custom/TableList";
 
-import { TESTING } from "config/config";
 import { TEST_HISTORY_TABLE_DATA } from "config/testData";
+import { fetchData } from "util/helpers";
 
 export default function History() {
-  const token = useSelector(({ currentUser }) => currentUser.token);
+  const dispatch = useDispatch();
+  const token = useSelector(({ currentUser }) => currentUser.user.token);
   const [history, setHistory] = useState([]);
 
   const formatHistoryData = (requests) => (
@@ -23,22 +24,19 @@ export default function History() {
   );
 
   useEffect(() => {
-    if (TESTING) {
-      setHistory(TEST_HISTORY_TABLE_DATA);
-    } else {
-      const options = {
-        method: 'POST',
-        headers: setHeaders()
-      }
+    const options = {
+      method: 'POST',
+      headers: setHeaders(token)
+    };
 
-      console.log('fetching history...');
-      fetch(DONOR_HISTORY, options)
-        .then(res => res.json())
-        .then()
-        .catch(err => console.log('fetching history error', err))
-    }
-
-  }, [token]);
+    fetchData({
+      dispatch: dispatch,
+      link: DONOR_HISTORY,
+      test: setHistory(TEST_HISTORY_TABLE_DATA),
+      options: options,
+      onSuccess: setHistory
+    });
+  }, [token, dispatch]);
 
   return (
     <TableList

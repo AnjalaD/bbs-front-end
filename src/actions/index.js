@@ -1,6 +1,6 @@
-export const login = (data) => ({
+export const login = (user) => ({
     type: 'LOGIN',
-    payload: data
+    payload: user
 })
 
 export const logout = () => ({
@@ -24,4 +24,16 @@ export const end_loading = () => ({
 export const set_admin = (setAdmin) => ({
     type: 'SET_ADMIN',
     payload: setAdmin
+})
+
+export const add_notification = (text = 'error', type = 'danger') => ({
+    type: 'ADD_NTF',
+    payload: {
+        text: text,
+        type: type
+    }
+})
+
+export const close_notification = () => ({
+    type: 'CLOSE_NTF'
 })

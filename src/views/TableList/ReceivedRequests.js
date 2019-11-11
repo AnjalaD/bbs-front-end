@@ -8,43 +8,58 @@ import GridItem from "components/Grid/GridItem";
 
 import { RECEIVD_REQUEST_DATA_HEADERS } from "config/tableData";
 import { TEST_RECEIVED_REQUEST_TABLE_DATA } from "config/testData";
-import { TESTING } from "config/config";
 import { set_loading } from "actions";
 import { DONOR_ACCEPT_REQUEST } from "config/api";
 import { setHeaders } from "util/helpers";
-import { end_loading } from "actions";
+import { fetchData } from "util/helpers";
+import { add_notification } from "actions";
 
 
 
 export default function ReceivedRequests() {
-  const token = useSelector(state => state.currentUser.token);
+  const token = useSelector(state => state.currentUser.user.token);
   const dispatch = useDispatch();
   const [receivedRequests, setReceivedRequests] = useState([]);
 
   const acceptHandler = (id, accept) => {
-    if (TESTING) {
-      setReceivedRequests(receivedRequests.filter(request => (request.id) !== id));
-    } else {
-      const options = {
-        method: 'POST',
-        headers: setHeaders(token),
-        body: JSON.stringify({})
-      }
+    const options = {
+      method: 'POST',
+      headers: setHeaders(token),
+      body: JSON.stringify({})
+    };
 
-      dispatch(set_loading("Processing Request..."));
-      fetch(DONOR_ACCEPT_REQUEST, options)
-        .then(res => res.json)
-        .then(res => {
-          if (res) {
-            dispatch(end_loading());
-            setReceivedRequests(receivedRequests.filter(request => (request.id) !== id));
-          } else {
-            console.log('upgrade request faied')
-          }
-        })
-        .catch(err => console.log('account updrade error', err))
+    const onSuccess = () => {
+      setReceivedRequests(receivedRequests.filter(request => (request.id) !== id));
+      dispatch(add_notification(
+        'Request ' + (accept ? 'Accepted' : 'Rejected'),
+        accept ? 'info' : 'danger'
+      ));
     }
+
+    fetchData({
+      dispatch: dispatch,
+      link: DONOR_ACCEPT_REQUEST,
+      options: options,
+      startLoading: () => set_loading('Processing Request...'),
+      onSuccess: onSuccess,
+      test: onSuccess
+    });
   }
+
+  useEffect(() => {
+    const options = {
+      method: 'POST',
+      headers: setHeaders(token),
+      body: JSON.stringify({})
+    };
+
+    fetchData({
+      dispatch: dispatch,
+      link: '',
+      options: options,
+      test: () => setReceivedRequests(TEST_RECEIVED_REQUEST_TABLE_DATA)
+    });
+  }, [token, dispatch]);
 
   const formatReceivedRequestData = (requests) => (
     requests.map(({ sender, reqState, id }) => (
@@ -75,13 +90,6 @@ export default function ReceivedRequests() {
       ]
     ))
   );
-
-  useEffect(() => {
-    console.log('fetching received requests...');
-    if (TESTING) {
-      setReceivedRequests(TEST_RECEIVED_REQUEST_TABLE_DATA);
-    }
-  }, []);
 
   return (
     <TableList

@@ -10,40 +10,56 @@ import { ADMIN_ACCEP_VIEWER } from "config/api";
 import { UPDRAGE_REQ_TABLE_HEADERS } from "config/tableData";
 import { setHeaders } from "util/helpers";
 
-import { TESTING } from "config/config";
 import { TEST_UPGRADE_REQ_TABLE_DATA } from "config/testData";
 import { set_loading } from "actions";
-import { end_loading } from "actions";
+import { fetchData } from "util/helpers";
+import { add_notification } from "actions";
 
 
 export default function UpgradeRequests() {
-  const token = useSelector(state => state.currentUser.token);
+  const token = useSelector(state => state.currentUser.user.token);
   const dispatch = useDispatch();
   const [requests, setRequests] = useState([]);
 
   const acceptHandler = (id, accept) => {
-    if (TESTING) {
-      setRequests(requests.filter(user => (user.id) !== id))
-    } else {
-      const options = {
-        method: 'POST',
-        headers: setHeaders(token),
-        body: JSON.stringify({})
-      }
-      dispatch(set_loading("Processing Request..."));
-      fetch(ADMIN_ACCEP_VIEWER, options)
-        .then(res => res.json)
-        .then(res => {
-          if (res) {
-            dispatch(end_loading());
-            setRequests(requests.filter(user => (user.id) !== id))
-          } else {
-            console.log('upgrade request faied')
-          }
-        })
-        .catch(err => console.log('account updrade error', err))
+    const options = {
+      method: 'POST',
+      headers: setHeaders(token),
+      body: JSON.stringify({})
     }
+
+    const onSuccess = () => {
+      setRequests(requests.filter(user => (user.id) !== id));
+      dispatch(add_notification(
+        accept ? 'User request Accepted' : 'User request Rejected',
+        accept ? 'success' : 'danger'
+      ))
+    }
+    fetchData({
+      dispatch: dispatch,
+      link: ADMIN_ACCEP_VIEWER,
+      options: options,
+      startLoading: () => set_loading('Processing Request...'),
+      onSuccess: onSuccess,
+      test: onSuccess
+    })
   }
+
+  useEffect(() => {
+    const options = {
+      method: 'POST',
+      headers: setHeaders(token)
+    }
+
+    fetchData({
+      dispatch: dispatch,
+      link: ADMIN_ACCEP_VIEWER,
+      options: options,
+      startLoading: () => set_loading('Processing Request...'),
+      onSuccess: setRequests,
+      test: () => setRequests(TEST_UPGRADE_REQ_TABLE_DATA)
+    })
+  }, [token, dispatch]);
 
 
   const formatRequestData = (requests) => (
@@ -75,24 +91,6 @@ export default function UpgradeRequests() {
       ]
     ))
   );
-
-  useEffect(() => {
-    if (TESTING) {
-      setRequests(TEST_UPGRADE_REQ_TABLE_DATA);
-    } else {
-      const options = {
-        method: 'POST',
-        headers: setHeaders(token)
-      }
-
-      console.log('fetching upgrade requests...');
-      fetch(ADMIN_ACCEP_VIEWER, options)
-        .then(res => res.json())
-        .then()
-        .catch(err => console.log('fetchin upgrade requests error', err))
-    }
-
-  }, [token]);
 
   return (
     <TableList

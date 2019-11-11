@@ -6,40 +6,37 @@ import { DONATIONS_TABLE_HEADERS } from "config/tableData";
 import { ADMIN_VERIFY_DONATION } from "config/api";
 import { setHeaders } from "util/helpers";
 
-import { TESTING } from "config/config";
 import { TEST_DONATION_TABLE_DATA } from "config/testData";
 import Button from "components/CustomButtons/Button";
 import { set_loading } from "actions";
-import { end_loading } from "actions";
+import { fetchData } from "util/helpers";
 
 
 export default function Donations() {
-  const token = useSelector(state => state.currentUser.token);
+  const token = useSelector(state => state.currentUser.user.token);
   const dispatch = useDispatch();
   const [requests, setRequests] = useState([]);
 
   const onClickHandler = (id) => {
-    if (TESTING) {
-      setRequests(requests.filter(request => (request.id !== id)))
-    } else {
-      dispatch(set_loading("Verifing Donation..."));
-      const options = {
-        method: 'POST',
-        headers: setHeaders(token),
-        body: JSON.stringify({})
-      }
-      fetch(ADMIN_VERIFY_DONATION, options)
-        .then(res => res.json)
-        .then(res => {
-          if (res) {
-            dispatch(end_loading());
-            setRequests(requests.filter(request => (request.id !== id)));
-          } else {
-            console.log('verify request faied')
-          }
-        })
-        .catch(err => console.log('donation verify error', err))
+    const onSuccess = () => {
+      setRequests(requests.filter(request => (request.id !== id)));
     }
+
+    const options = {
+      method: 'POST',
+      headers: setHeaders(token),
+      body: JSON.stringify({})
+    }
+
+    fetchData({
+      dispatch: dispatch,
+      link: ADMIN_VERIFY_DONATION,
+      options: options,
+      test: onSuccess,
+      startLoading: () => set_loading("Verifing Donation..."),
+      onSuccess: onSuccess,
+      error: "verifing donation error"
+    });
   }
 
   const formatDonationstData = (donations) => (
@@ -58,23 +55,20 @@ export default function Donations() {
   );
 
   useEffect(() => {
-    if (TESTING) {
-      setRequests(TEST_DONATION_TABLE_DATA);
-    } else {
-      const options = {
-        method: 'POST',
-        headers: setHeaders(token),
-        body: JSON.stringify({})
-      }
-
-      console.log('fetching upgrade requests...');
-      fetch(ADMIN_VERIFY_DONATION, options)
-        .then(res => res.json())
-        .then()
-        .catch(err => console.log('fetchin upgrade requests error', err))
+    const options = {
+      method: 'POST',
+      headers: setHeaders(token),
+      body: JSON.stringify({})
     }
+    fetchData({
+      dispatch: dispatch,
+      link: '',
+      options: options,
+      test: () => setRequests(TEST_DONATION_TABLE_DATA),
+      onSuccess: setRequests
+    });
 
-  }, [token]);
+  }, [token, dispatch]);
 
   return (
     <TableList

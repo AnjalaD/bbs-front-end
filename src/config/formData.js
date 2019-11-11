@@ -1,35 +1,46 @@
 export const bloodGroups = [
     {
-        value: 0,
+        value: 1,
         label: "O-"
     },
     {
-        value: 1,
+        value: 2,
         label: "O+"
     },
     {
-        value: 2,
+        value: 3,
         label: "A-"
     },
     {
-        value: 3,
+        value: 4,
         label: "A+"
     },
     {
-        value: 4,
+        value: 5,
         label: "B-"
     },
     {
-        value: 5,
+        value: 6,
         label: "B+"
     },
     {
-        value: 6,
+        value: 7,
         label: "AB-"
     },
     {
-        value: 7,
+        value: 8,
         label: "AB+"
+    }
+];
+
+const gender = [
+    {
+        value: 'm',
+        label: 'Male'
+    },
+    {
+        value: 'f',
+        label: 'Female'
     }
 ];
 
@@ -105,13 +116,13 @@ export const userRegisterFields = [
         type: 'email',
         name: 'email'
     },
-    {
-        labelText: "Telephone no.",
-        inputType: "input",
-        id: "telephone",
-        type: 'text',
-        name: 'telephone'
-    },
+    // {
+    //     labelText: "Telephone no.",
+    //     inputType: "input",
+    //     id: "telephone",
+    //     type: 'text',
+    //     name: 'telephone'
+    // },
     {
         labelText: "Date of Birth",
         inputType: "input",
@@ -121,10 +132,17 @@ export const userRegisterFields = [
     },
     {
         labelText: "Gender",
-        inputType: "input",
+        inputType: "select",
         id: "gender",
-        type: 'text',
-        name: 'gender'
+        name: 'gender',
+        selection: gender
+    },
+    {
+        labelText: "Blood Group",
+        inputType: 'select',
+        id: 'blood_group',
+        name: 'blood_group',
+        selection: bloodGroups
     },
     {
         labelText: "Password",
@@ -133,11 +151,11 @@ export const userRegisterFields = [
         type: 'password',
         name: 'password',
     },
-    {
-        labelText: "Confirm Password",
-        inputType: "input",
-        id: "confirm",
-        type: 'password',
-        name: 'confirm',
-    }
+    // {
+    //     labelText: "Confirm Password",
+    //     inputType: "input",
+    //     id: "confirm",
+    //     type: 'password',
+    //     name: 'confirm',
+    // }
 ];

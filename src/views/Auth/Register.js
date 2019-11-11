@@ -15,7 +15,9 @@ import { USER_SIGNUP } from "config/api";
 import InputSelector from "components/Custom/InputSelector";
 import { userRegisterFields } from "config/formData";
 import { login } from "actions";
-import { end_loading } from "actions";
+import { setHeaders } from "util/helpers";
+import { fetchData } from "util/helpers";
+import { add_notification } from "actions";
 
 const styles = {
 	cardCategoryWhite: {
@@ -46,7 +48,7 @@ export default function Register() {
 		gender: '',
 		email: '',
 		password: '',
-		confirm: ''
+		blood_group: '',
 	}
 	const dispatch = useDispatch();
 	const [user, setUser] = useState(initUser);
@@ -59,27 +61,29 @@ export default function Register() {
 	}
 
 	const registerHandler = () => {
-		//register logic
-		dispatch(set_loading("Registration In Progress..."));
 		const options = {
+			headers: setHeaders(),
 			method: 'POST',
 			body: JSON.stringify(user)
 		}
-		//display loading view
 
-
-		//check register new user
-		fetch(USER_SIGNUP, options)
-			.then(res => res.json())
-			.then(res => {
-				dispatch(end_loading());
-				if (res) {
-					dispatch(login(res))
-				} else {
-					console.log("registration failed");
-				}
-			})
-			.catch(err => console.log('register api call error', err))
+		const onSuccess = (res) => {
+			dispatch(login(res.user))
+		}
+		//register logic
+		fetchData({
+			link: USER_SIGNUP,
+			options: options,
+			startLoading: () => set_loading("Registration In Progress..."),
+			dispatch: dispatch,
+			onSuccess: onSuccess,
+			onFail: (res) => dispatch(add_notification(
+				res.errors.details[0].message,
+				'danger'
+			)),
+			tes: () => dispatch(login(user))
+		})
+		dispatch(set_loading("Registration In Progress..."));
 	}
 
 	const formFields = function (fields) {
@@ -87,7 +91,8 @@ export default function Register() {
 			fields.map((field, key) => (
 				< GridItem xs={12} sm={12} md={6} key={key}>
 					<InputSelector
-						type={field.type}
+						type={field.inputType}
+						selection={field.selection ? field.selection : null}
 						id={field.id}
 						labelText={field.labelText}
 						formControlProps={{

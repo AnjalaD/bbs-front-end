@@ -13,17 +13,19 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CustomSelect from "components/CustomInput/CustomSelect";
 import IconButton from "@material-ui/core/IconButton";
-
 //icons
 import SearchIcon from "@material-ui/icons/Search";
+
 import { SEARCH_TABLE_HEADERS } from "config/tableData";
 import { TEST_SEARCH_TABLE_DATA } from "config/testData";
 import { USER_SEARCH } from "config/api";
 import { set_loading } from "actions";
-import { TESTING } from "config/config";
 import { setHeaders } from "util/helpers";
 import CustomButton from "components/CustomButtons/Button";
-import { end_loading } from "actions";
+import { fetchData } from "util/helpers";
+import { DONOR_SEARCH } from "config/api";
+import { add_notification } from "actions";
+import { USER_REQUEST_DONOR } from "config/api";
 
 const styles = {
     cardCategoryWhite: {
@@ -59,17 +61,21 @@ const useStyles = makeStyles(styles);
 
 export default function Search() {
     const dispatch = useDispatch();
-    const token = useSelector(({ currentUser }) => currentUser.token);
+    const user = useSelector(({ currentUser }) => currentUser.user);
 
     const [searchValue, setSearchValue] = useState('');
     const [searchResults, setSeachResutls] = useState([]);
 
-    const formatSearchData = (searchResults) => (
-        searchResults.map((donor) => (
-            [
+    const formatSearchData = (searchResults) => {
+        const results = searchResults.map((donor) => {
+            const blood_group = bloodGroups.filter(
+                group => group.value === donor.blood_group
+            );
+            // console.log('bl', blood_group);
+            return ([
                 donor.first_name + " " + donor.last_name,
-                donor.bloodGroup,
-                donor.telephone,
+                blood_group[0].label,
+                donor.email,
                 <CustomButton
                     color="success"
                     size="sm"
@@ -77,59 +83,58 @@ export default function Search() {
                 >
                     Request
                 </CustomButton>
-            ]
-        ))
-    );
+            ])
+        });
+        // console.log('resutls', results);
+        return results;
+    };
 
     const requestHandler = (id) => {
-        if (TESTING) {
+        const onSuccess = () => {
             setSeachResutls(searchResults.filter(donor => (donor.id) !== id));
-        } else {
-            const options = {
-                method: 'POST',
-                headers: setHeaders(token),
-                body: JSON.stringify({})
-            }
+            dispatch(add_notification(
+                'Donation request sent',
+                'info'
+            ))
+        };
 
-            dispatch(set_loading("Requesting..."));
-            fetch('', options)
-                .then(res => res.json)
-                .then(res => {
-                    if (res) {
-                        dispatch(end_loading());
-                        setSeachResutls(searchResults.filter(donor => (donor.id) !== id));
-                    } else {
-                        console.log('donor request failed')
-                    }
-                })
-                .catch(err => console.log('donor request error', err))
+        const options = {
+            method: 'POST',
+            headers: setHeaders(user.token),
+            body: JSON.stringify({
+                donor: id
+            })
         }
+
+        fetchData({
+            dispatch: dispatch,
+            link: USER_REQUEST_DONOR,
+            options: options,
+            test: onSuccess,
+            startLoading: () => set_loading("Sending request..."),
+            onSuccess: onSuccess,
+            error: 'send request error'
+        });
     }
 
     const searchHandler = () => {
-        if (TESTING) {
-            setSeachResutls(TEST_SEARCH_TABLE_DATA);
-        } else {
-            const options = {
-                method: 'POST',
-                headers: setHeaders(token),
-                body: JSON.stringify({
-                    search: searchValue
-                })
-            }
-
-            //set loading view
-            dispatch(set_loading("Searching for donors..."));
-
-            //fetching search results...
-            fetch(USER_SEARCH, options)
-                .then(res => res.json)
-                .then(
-                    //remove loading view
-                    dispatch(end_loading())
-                )
-                .catch(err => console.log('fetch search results error', err))
+        const options = {
+            method: 'POST',
+            headers: setHeaders(user.token),
+            body: JSON.stringify({
+                key: searchValue
+            })
         }
+
+        fetchData({
+            dispatch: dispatch,
+            link: USER_SEARCH,
+            options: options,
+            test: () => setSeachResutls(TEST_SEARCH_TABLE_DATA),
+            startLoading: () => set_loading("Searching for donors..."),
+            onSuccess: (res) => setSeachResutls(res.Users),
+            error: 'search donors error'
+        });
 
     }
 

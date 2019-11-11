@@ -17,6 +17,10 @@ export const USER_DONOR_DETAILS = HOST + "api/users/donordetails"
 //  - POST(Request donor details)
 export const USER_LOGOUT = HOST + "api/users/logout"
 //  POST
+export const USER_REQUEST_DONOR = HOST + "api/users/requestdonor"
+// -POST
+export const USER_VIEW_REQUESTS = HOST + "api/users/requests"
+//-POST
 
 // DONOR ROUTES
 // api/donors/login - POST/

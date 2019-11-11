@@ -16,9 +16,9 @@ import { set_loading, login } from "actions";
 
 import { TEST_USER } from "config/testData";
 import { USER_LOGIN } from "config/api";
-import { TESTING } from "config/config";
 import { setHeaders } from "util/helpers";
-import { end_loading } from "actions";
+import { add_notification } from "actions";
+import { fetchData } from "util/helpers";
 
 const styles = {
     cardCategoryWhite: {
@@ -47,40 +47,32 @@ export default function Login() {
     const [password, setPassword] = useState('');
 
     const loginHandler = () => {
-        if (TESTING) {
-            // mimic login
-            dispatch(login({
-                user: TEST_USER,
-                token: "sfafikfmalsnmclaswoc"
-            }));
-        } else {
-            //login logic
-            const user = {
-                email: email,
-                password: password
-            }
-
-            const options = {
-                method: 'POST',
-                headers: setHeaders(),
-                body: JSON.stringify(user)
-            }
-            //display loading view
-            dispatch(set_loading("Loggin In..."));
-
-            //check login
-            fetch(USER_LOGIN, options)
-                .then(res => res.json())
-                .then(res => {
-                    if (res) {
-                        //remove loading view
-                        dispatch(end_loading(), login(res));
-                    } else {
-                        console.log("wrong email or password");
-                    }
-                })
-                .catch(err => console.log('logging api call error', err))
+        //login logic
+        const user = {
+            email: email,
+            password: password
         }
+
+        const options = {
+            method: 'POST',
+            headers: setHeaders(),
+            body: JSON.stringify(user)
+        }
+        //display loading view
+        dispatch(set_loading("Loggin In..."));
+        fetchData({
+            dispatch: dispatch,
+            link: USER_LOGIN,
+            options: options,
+            startLoading: () => set_loading('Verifing details...'),
+            onSuccess: (res) => dispatch(login(res.user)),
+            onFail: () => dispatch(add_notification(
+                'Incorrect email or password',
+                'danger'
+            )),
+            test: () => dispatch(login(TEST_USER))
+        })
+
     }
 
     const classes = useStyles();

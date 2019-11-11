@@ -6,72 +6,52 @@ import TableList from "components/Custom/TableList";
 import { REQUEST_DATA_HEADERS } from "config/tableData";
 
 import { TEST_REQUEST_TABLE_DATA } from "config/testData";
-import { TESTING } from "config/config";
-import CustomButton from "components/CustomButtons/Button";
+// import CustomButton from "components/CustomButtons/Button";
 import { setHeaders } from "util/helpers";
+
+import { fetchData } from "util/helpers";
+import { USER_VIEW_REQUESTS } from "config/api";
 import { set_loading } from "actions";
-import { end_loading } from "actions";
+import { bloodGroups } from "config/formData";
 
 
 export default function Requests() {
   const [requests, setRequests] = useState([]);
-  const token = useSelector(state => state.currentUser.token);
+  const token = useSelector(state => state.currentUser.user.token);
   const dispatch = useDispatch();
 
-  const cancelHandler = (id) => {
-    if (TESTING) {
-      setRequests(requests.filter(request => (request.id) !== id));
-    } else {
-      const options = {
-        method: 'POST',
-        headers: setHeaders(token),
-        body: JSON.stringify({})
-      }
+  const statusMessage = ['Pending', 'Accepted'];
 
-      dispatch(set_loading("Canceling Request..."));
-      fetch('', options)
-        .then(res => res.json)
-        .then(res => {
-          if (res) {
-            dispatch(end_loading);
-            setRequests(requests.filter(request => (request.id) !== id));
-          } else {
-            console.log('cancel request failed')
-          }
-        })
-        .catch(err => console.log('cancel request error', err))
-    }
-  }
-
-
-  const statusMessage = ['Pending', 'Accepted', 'Rejected'];
-
-  const formatRequestData = (requests) => (
-    requests.map(({ donor, reqState, id }) => (
-      [
-        donor.first_name + " " + donor.last_name,
-        donor.bloodGroup,
-        donor.telephone,
-        statusMessage[reqState],
-        reqState === 0 ?
-          <CustomButton
-            color="danger"
-            size="sm"
-            onClick={() => cancelHandler(id)}
-          >
-            Cancel
-          </CustomButton>
-          : "---"
-      ]
-    ))
-  );
+  const formatRequestData = (requests) => {
+    const results = requests.map((donor) => {
+      const blood_group = bloodGroups.filter(
+        group => group.value === donor.blood_group
+      );
+      return (
+        [
+          donor.first_name + " " + donor.last_name,
+          blood_group[0].label,
+          donor.email,
+          statusMessage[donor.match_status]
+        ]
+      )
+    })
+    return results
+  };
 
   useEffect(() => {
-    console.log('fetching requests...');
-    if (TESTING) {
-      setRequests(TEST_REQUEST_TABLE_DATA);
-    }
-  }, []);
+    const options = {
+      method: 'POST',
+      headers: setHeaders(token)
+    };
+    fetchData({
+      dispatch: dispatch,
+      link: USER_VIEW_REQUESTS,
+      options: options,
+      test: () => setRequests(TEST_REQUEST_TABLE_DATA),
+      onSuccess: res => setRequests(res.requests)
+    });
+  }, [dispatch, token]);
 
   return (
     <TableList

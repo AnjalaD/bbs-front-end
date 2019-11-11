@@ -3,10 +3,10 @@ export const TEST_USER = {
     first_name: 'Ruchin',
     last_name: 'Meegamuwa',
     email: 'rume@gmail.com',
-    telephone: '0719090909',
     gender: 'male',
     birthday: '1997-09-18',
-    account_status: 1
+    token: "sfafikfmalsnmclaswoc",
+    is_donor: 1
 }
 
 export const TEST_SEARCH_TABLE_DATA = [

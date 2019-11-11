@@ -45,7 +45,7 @@ const useStyles = makeStyles(styles);
 export default function UserProfile() {
     const classes = useStyles();
 
-    const { user, token } = useSelector(({ currentUser }) => currentUser);
+    const user = useSelector(({ currentUser }) => currentUser.user);
     const dispatch = useDispatch();
 
     const initUser = {
@@ -73,15 +73,14 @@ export default function UserProfile() {
         if (TESTING) {
             dispatch(update_profile(updatableUser));
         } else {
-            const link = [USER_UPDATE, DONOR_UPDATE];
             const options = {
-                headers: setHeaders(token),
+                headers: setHeaders(user.token),
                 method: 'PUT',
                 body: JSON.stringify(updatableUser)
             }
             dispatch(set_loading("Updating profile..."));
             //update user
-            fetch(link[user.account_status], options)
+            fetch(user.is_donor ? DONOR_UPDATE : USER_UPDATE, options)
                 .then(res => res.json())
                 .then(
                     dispatch(end_loading())
@@ -92,19 +91,17 @@ export default function UserProfile() {
 
     const upgradeHandler = () => {
         if (TESTING) {
-            const status = [1, 0];
             dispatch(update_profile(Object.assign({}, user, {
-                account_status: status[user.account_status]
+                is_donor: !user.is_donor
             })))
         } else {
             const options = {
-                headers: setHeaders(token),
+                headers: setHeaders(user.token),
                 method: 'POST'
             }
-            const link = [USER_UPGRAGE, DONOR_DOWNGRADE];
             dispatch(set_loading("Sending Request..."));
             //change user type
-            fetch(link[user.account_status], options)
+            fetch(user.is_donor ? DONOR_DOWNGRADE : USER_UPGRAGE, options)
                 .then(res => res.json())
                 .then(
                     dispatch(end_loading())
@@ -119,12 +116,11 @@ export default function UserProfile() {
         } else {
             const options = {
                 method: 'DELETE',
-                headers: setHeaders(token)
+                headers: setHeaders(user.token)
             }
-            const link = [USER_DELETE, DONOR_DELETE];
             dispatch(set_loading("Deleting account..."));
             //deleting user type
-            fetch(link[user.account_status], options)
+            fetch(user.is_donor ? DONOR_DELETE : USER_DELETE, options)
                 .then(res => res.json())
                 .then(
                     dispatch(end_loading())
@@ -194,7 +190,7 @@ export default function UserProfile() {
                             </Button>
                         </CardFooter>
                     </Card>
-                    {user.account_status === 1 ?
+                    {user.is_donor ?
                         <Card>
                             <CardHeader color="primary">
                                 <h4 className={classes.cardTitleWhite}>Donor Details</h4>
@@ -216,7 +212,7 @@ export default function UserProfile() {
                         button={
                             <GridContainer justify="center" direction="column">
                                 <GridItem>
-                                    {statusButton[user.account_status]}
+                                    {user.is_donor ? statusButton[1] : statusButton[0]}
                                 </GridItem>
                                 <GridItem>
                                     <Button round size="sm" onClick={deleteHandler}>Delete Account</Button>
