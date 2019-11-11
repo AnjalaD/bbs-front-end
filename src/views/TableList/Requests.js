@@ -11,7 +11,6 @@ import { setHeaders } from "util/helpers";
 
 import { fetchData } from "util/helpers";
 import { USER_VIEW_REQUESTS } from "config/api";
-import { set_loading } from "actions";
 import { bloodGroups } from "config/formData";
 
 
@@ -32,7 +31,7 @@ export default function Requests() {
           donor.first_name + " " + donor.last_name,
           blood_group[0].label,
           donor.email,
-          statusMessage[donor.match_status]
+          statusMessage[donor.match_status - 1]
         ]
       )
     })

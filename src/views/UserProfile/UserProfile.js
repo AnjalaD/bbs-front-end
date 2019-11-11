@@ -14,12 +14,13 @@ import InputSelector from "components/Custom/InputSelector";
 
 import { update_profile, set_loading, logout } from "actions";
 import { USER_UPGRAGE, USER_UPDATE, USER_DELETE } from "config/api";
-import { DONOR_DOWNGRADE, DONOR_UPDATE, DONOR_DELETE } from "config/api";
-import { TESTING } from "config/config";
+import { DONOR_DOWNGRADE } from "config/api";
 import { userProfileFields } from "config/formData";
 import { setHeaders } from "util/helpers";
 import ProfileCard from "components/Custom/ProfileCard";
-import { end_loading } from "actions";
+import { fetchData } from "util/helpers";
+import { add_notification } from "actions";
+import { login } from "actions";
 
 const styles = {
     cardCategoryWhite: {
@@ -54,7 +55,7 @@ export default function UserProfile() {
         birthday: '',
         gender: '',
         email: '',
-        telephone: ''
+        blood_group: '',
     }
 
     const [updatableUser, setUpdatableUser] = useState(initUser);
@@ -70,63 +71,63 @@ export default function UserProfile() {
     }
 
     const updateHandler = () => {
-        if (TESTING) {
-            dispatch(update_profile(updatableUser));
-        } else {
-            const options = {
-                headers: setHeaders(user.token),
-                method: 'PUT',
-                body: JSON.stringify(updatableUser)
-            }
-            dispatch(set_loading("Updating profile..."));
-            //update user
-            fetch(user.is_donor ? DONOR_UPDATE : USER_UPDATE, options)
-                .then(res => res.json())
-                .then(
-                    dispatch(end_loading())
-                )
-                .catch(err => console.log("update user error", err));
+        const options = {
+            headers: setHeaders(user.token),
+            method: 'PUT',
+            body: JSON.stringify(updatableUser)
         }
+
+        fetchData({
+            dispatch: dispatch,
+            link: USER_UPDATE,
+            options: options,
+            startLoading: () => set_loading('Updating profile..'),
+            onSuccess: (res) => {
+                dispatch(login(res.user));
+                dispatch(add_notification(
+                    'Profile Updated', 'info'
+                ))
+            },
+            onFail: () => dispatch(add_notification(
+                'Profile Update Failed', 'danger'
+            )),
+            test: dispatch(update_profile(updatableUser))
+        });
     }
 
     const upgradeHandler = () => {
-        if (TESTING) {
-            dispatch(update_profile(Object.assign({}, user, {
+        const options = {
+            headers: setHeaders(user.token),
+            method: 'POST'
+        }
+        fetchData({
+            dispatch: dispatch,
+            link: user.is_donor ? DONOR_DOWNGRADE : USER_UPGRAGE,
+            options: options,
+            startLoading: () => set_loading('Processing Request'),
+            onSuccess: () => dispatch(add_notification(
+                'Reqeust Sent- Wait for confirmation',
+                'info'
+            )),
+            test: () => dispatch(update_profile(Object.assign({}, user, {
                 is_donor: !user.is_donor
             })))
-        } else {
-            const options = {
-                headers: setHeaders(user.token),
-                method: 'POST'
-            }
-            dispatch(set_loading("Sending Request..."));
-            //change user type
-            fetch(user.is_donor ? DONOR_DOWNGRADE : USER_UPGRAGE, options)
-                .then(res => res.json())
-                .then(
-                    dispatch(end_loading())
-                )
-                .catch(err => console.log('donor<=>viewer', err));
-        }
+        })
     }
 
     const deleteHandler = () => {
-        if (TESTING) {
-            dispatch(logout());
-        } else {
-            const options = {
-                method: 'DELETE',
-                headers: setHeaders(user.token)
-            }
-            dispatch(set_loading("Deleting account..."));
-            //deleting user type
-            fetch(user.is_donor ? DONOR_DELETE : USER_DELETE, options)
-                .then(res => res.json())
-                .then(
-                    dispatch(end_loading())
-                )
-                .catch(err => console.log('delete donor', err));
+        const options = {
+            method: 'DELETE',
+            headers: setHeaders(user.token)
         }
+        fetchData({
+            dispatch: dispatch,
+            link: USER_DELETE,
+            options: options,
+            onSuccess: () => dispatch(logout()),
+            test: () => dispatch(logout()),
+            startLoading: () => dispatch(set_loading("Deleting account..."))
+        })
     }
 
     const statusButton = [
@@ -146,7 +147,8 @@ export default function UserProfile() {
             fields.map((field, key) => (
                 < GridItem xs={12} sm={12} md={6} key={key}>
                     <InputSelector
-                        type={field.type}
+                        type={field.inputType}
+                        selection={field.selection}
                         id={field.id}
                         labelText={field.labelText}
                         formControlProps={{
@@ -190,21 +192,6 @@ export default function UserProfile() {
                             </Button>
                         </CardFooter>
                     </Card>
-                    {user.is_donor ?
-                        <Card>
-                            <CardHeader color="primary">
-                                <h4 className={classes.cardTitleWhite}>Donor Details</h4>
-                            </CardHeader>
-                            <CardBody>
-                                <GridContainer>
-                                    <GridItem>
-                                        <h5 className={classes.cardCategory}>Blood type</h5>
-                                    </GridItem>
-                                </GridContainer>
-                            </CardBody>
-                        </Card>
-                        : null
-                    }
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                     <ProfileCard

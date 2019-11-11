@@ -28,11 +28,11 @@ export const DONOR_HISTORY = HOST + "api/donors/history"
 //  - POST (See hsi/her medical history)
 export const DONOR_DOWNGRADE = HOST + "api/donors/unregister"
 //  - POST (Become a viewer again)
-export const DONOR_UPDATE = HOST + "api/donors/update"
+// export const DONOR_UPDATE = HOST + "api/donors/update"
 //  - PUT(Update info)
-export const DONOR_DELETE = "api/donors/delete"
+// export const DONOR_DELETE = "api/donors/delete"
 //  - DELETE (Delete his /her own acc)
-export const DONOR_SEARCH = "api/donors/search"
+// export const DONOR_SEARCH = "api/donors/search"
 //  - POST (Search donors)
 export const DONOR_ACCEPT_REQUEST = HOST + "api/donors/accept"
 //  - POST (Accept blood donation request)

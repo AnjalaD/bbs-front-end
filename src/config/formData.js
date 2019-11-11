@@ -69,14 +69,6 @@ export const userProfileFields = [
         name: 'email',
     },
     {
-        labelText: "Telephone no.",
-        inputType: "input",
-        id: "telephone",
-        type: 'text',
-        name: 'telephone',
-
-    },
-    {
         labelText: "Date of Birth",
         inputType: "input",
         id: "birthday",
@@ -85,12 +77,20 @@ export const userProfileFields = [
     },
     {
         labelText: "Gender",
-        inputType: "input",
+        inputType: "select",
         id: "gender",
+        name: 'gender',
+        selection: gender,
         disabled: true,
-        type: 'text',
-        name: 'gender'
-    }
+    },
+    {
+        disabled: true,
+        labelText: "Blood Group",
+        inputType: 'select',
+        id: 'blood_group',
+        name: 'blood_group',
+        selection: bloodGroups
+    },
 ];
 
 

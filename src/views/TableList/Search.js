@@ -23,7 +23,6 @@ import { set_loading } from "actions";
 import { setHeaders } from "util/helpers";
 import CustomButton from "components/CustomButtons/Button";
 import { fetchData } from "util/helpers";
-import { DONOR_SEARCH } from "config/api";
 import { add_notification } from "actions";
 import { USER_REQUEST_DONOR } from "config/api";
 
