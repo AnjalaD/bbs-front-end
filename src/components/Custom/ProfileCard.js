@@ -42,7 +42,6 @@ export default function ProfileCard(props) {
             <CardBody profile>
                 <h5 className={classes.cardCategory}>{props.user.email}</h5>
                 <h4 className={classes.cardTitle}>{props.user.first_name + " " + props.user.last_name}</h4>
-                <h5 className={classes.cardCategory}>Tele. No: {props.user.telephone}</h5>
                 <h5 className={classes.cardCategory}>Gender: {props.user.gender}</h5>
                 <h5 className={classes.cardCategory}>Date of Birth: {props.user.birthday}</h5>
                 {props.button}

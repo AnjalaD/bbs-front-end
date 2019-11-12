@@ -15,12 +15,13 @@ export default function History() {
   const [history, setHistory] = useState([]);
 
   const formatHistoryData = (requests) => (
-    requests.map(({ receiver, accepted_on }) => (
+    requests.map((donation => (
       [
-        receiver.first_name + " " + receiver.last_name,
-        accepted_on
+        donation.first_name + " " + donation.last_name,
+        donation.email,
+        donation.donated_date
       ]
-    ))
+    )))
   );
 
   useEffect(() => {
@@ -34,14 +35,14 @@ export default function History() {
       link: DONOR_HISTORY,
       test: setHistory(TEST_HISTORY_TABLE_DATA),
       options: options,
-      onSuccess: setHistory
+      onSuccess: (res) => setHistory(res.requests)
     });
   }, [token, dispatch]);
 
   return (
     <TableList
-      title="Sent Request"
-      subtitle="requests sent for blood donors"
+      title="Donation History"
+      subtitle="past donations"
       color="primary"
       tableHeaders={HISTORY_TABLE_HEADERS}
       tableData={formatHistoryData(history)}

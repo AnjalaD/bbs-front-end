@@ -102,11 +102,11 @@ export default function UserProfile() {
         }
         fetchData({
             dispatch: dispatch,
-            link: user.is_donor ? DONOR_DOWNGRADE : USER_UPGRAGE,
+            link: USER_UPGRAGE,
             options: options,
             startLoading: () => set_loading('Processing Request'),
             onSuccess: () => dispatch(add_notification(
-                'Reqeust Sent- Wait for confirmation',
+                'Reqeust Sent- This may take upto 24 hours',
                 'info'
             )),
             test: () => dispatch(update_profile(Object.assign({}, user, {
@@ -134,12 +134,9 @@ export default function UserProfile() {
         <Button round color="primary" onClick={upgradeHandler} >
             Be a Blood Donor
         </Button>,
-        <Button round color="warning" onClick={upgradeHandler} >
-            Swicth To Basic Account
+        <Button round disabled color="warning" >
+            You are a Donor
         </Button>,
-        <Button round disabled color="primary">
-            Waiting...
-        </Button>
     ];
 
     const formFields = function (fields) {

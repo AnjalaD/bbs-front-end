@@ -15,8 +15,6 @@ export const USER_UPGRAGE = HOST + "api/users/donate"
 //  - POST(Request permission to donate) 
 export const USER_DONOR_DETAILS = HOST + "api/users/donordetails"
 //  - POST(Request donor details)
-export const USER_LOGOUT = HOST + "api/users/logout"
-//  POST
 export const USER_REQUEST_DONOR = HOST + "api/users/requestdonor"
 // -POST
 export const USER_VIEW_REQUESTS = HOST + "api/users/requests"
@@ -24,7 +22,7 @@ export const USER_VIEW_REQUESTS = HOST + "api/users/requests"
 
 // DONOR ROUTES
 // api/donors/login - POST/
-export const DONOR_HISTORY = HOST + "api/donors/history"
+export const DONOR_HISTORY = HOST + "api/users/history"
 //  - POST (See hsi/her medical history)
 export const DONOR_DOWNGRADE = HOST + "api/donors/unregister"
 //  - POST (Become a viewer again)
@@ -36,8 +34,8 @@ export const DONOR_DOWNGRADE = HOST + "api/donors/unregister"
 //  - POST (Search donors)
 export const DONOR_ACCEPT_REQUEST = HOST + "api/donors/accept"
 //  - POST (Accept blood donation request)
-export const DONOR_LOGOUT = "api/donors/logout"
-//  POST
+export const DONOR_REQUESTS = HOST + "api/donors/requests";
+//POST
 
 // ADMIN ROUTES
 export const ADMIN_LOGIN = HOST + '';
